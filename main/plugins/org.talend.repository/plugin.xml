@@ -4092,7 +4092,7 @@
                   commandId="org.talend.repository.integration.bootTalend"
                   icon="icons/newProject.png"
                   id="org.talend.repository.toolbar.bootTalend"
-                  tooltip="Boot Talend Studio">
+                  tooltip="Boot Talaxie Studio">
             </command>
          </toolbar>
       </menuContribution>
@@ -4111,7 +4111,7 @@
                label="Boot Talend"
                style="push"
                toolbarPath="Default"
-               tooltip="boot a new Talend Open Studio.">
+               tooltip="boot a new Talaxie Open Studio.">
          </action>
       </actionSet>
    </extension>

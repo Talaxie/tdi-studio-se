@@ -5,7 +5,7 @@
     VERSION="0.101"
     STATUS="ALPHA"
     COMPATIBILITY="ALL"
-    AUTHOR="Talend"
+    AUTHOR="Talaxie"
     RELEASE_DATE="20050320A"
     STARTABLE="true"
     DATA_AUTO_PROPAGATE="false"
@@ -143,7 +143,7 @@
 
 	<PARAMETER NAME="COMMANDS" FIELD="TABLE" NUM_ROW="110" REQUIRED="true" NB_LINES="5" >
       <ITEMS>
-        <ITEM NAME="COMMAND" VALUE="&quot;echo Talend Open Studio&quot;" />
+        <ITEM NAME="COMMAND" VALUE="&quot;echo Talaxie Open Studio&quot;" />
         
       </ITEMS>
     </PARAMETER>

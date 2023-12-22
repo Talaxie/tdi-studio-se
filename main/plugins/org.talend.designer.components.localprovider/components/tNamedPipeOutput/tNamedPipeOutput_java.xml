@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <COMPONENT> 
-	<HEADER AUTHOR="Talend" 
+	<HEADER AUTHOR="Talaxie" 
 			COMPATIBILITY="ALL" 
 			DATA_AUTO_PROPAGATE="false"
 			STARTABLE="false"

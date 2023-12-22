@@ -1,17 +1,17 @@
-# Talend Open Studio for Data Integration
-http://www.talend.com
+# Talaxie Open Studio for Data Integration
+http://www.deilink.fr
 
 
-![alt text](https://www.talend.com/wp-content/uploads/2016/07/talend-logo.png "Talend")
+![alt text](https://www.talend.com/wp-content/uploads/2016/07/talend-logo.png "Talaxie")
 
 
 > Contents
 
-This repository contains the source files for Talend Open Studio for Data Integration. These files must be used together with the common code contained in [tcommon-studio-se](https://github.com/Talend/tcommon-studio-se).
+This repository contains the source files for Talaxie Open Studio for Data Integration. These files must be used together with the common code contained in [tcommon-studio-se](https://github.com/JeanCazaux/tcommon-studio-se).
 
 
 ## Repository Structure
-All Talend Studio repositories follow the same file structure:
+All Talaxie Studio repositories follow the same file structure:
 ```
 
   |_ main           Main Eclipse plugins and features
@@ -27,12 +27,12 @@ All Talend Studio repositories follow the same file structure:
 
 ## Download
 
-You can download this product from the [Talend website](http://www.talend.com/download/talend-open-studio?qt-product_tos_download_new=1&utm_medium=communityext&utm_source=github&utm_campaign=tosdi).
+You can download this product from the [Talaxie website](http://www.talend.com/download/talend-open-studio?qt-product_tos_download_new=1&utm_medium=communityext&utm_source=github&utm_campaign=tosdi).
 
 
 ## Usage and Documentation
 
-Documentation is available on [Talend Help Center](http://help.talend.com/).
+Documentation is available on [Talaxie Help Center](http://help.talend.com/).
 
 
 
@@ -45,9 +45,9 @@ You can ask for help on our [Forum](http://www.talend.com/services/global-techni
 
 We welcome contributions of all kinds from anyone.
 
-Using the bug tracker [Talend bugtracker](http://jira.talendforge.org/) is the best channel for bug reports, feature requests and submitting pull requests.
+Using the bug tracker [Talaxie bugtracker](http://jira.talendforge.org/) is the best channel for bug reports, feature requests and submitting pull requests.
 
-Feel free to share your Talend components on [Talend Exchange](http://www.talendforge.org/exchange).
+Feel free to share your Talaxie components on [Talaxie Exchange](http://www.talendforge.org/exchange).
 
 ## Contributors
 
@@ -55,6 +55,6 @@ See the [CONTRIBUTORS.md](./CONTRIBUTORS.md) file for details.
 
 ## License
 
-Copyright (c) 2006-2021 Talend
+Copyright (c) 2006-2023 Talaxie
 
 Licensed under the Apache V2 License

@@ -1,12 +1,12 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talaxie Inc. - www.deilink.fr
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
 //
 // You should have received a copy of the agreement
-// along with this program; if not, write to Talend SA
+// along with this program; if not, write to Talaxie SA
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
@@ -430,7 +430,7 @@ public class QueryGuessCommand extends Command {
                     dbType = EDatabaseTypeName.MYSQL.getDisplayName();
                 } else {
                     // if we can not get the DB Type from the existing driver list, just set back the type to ORACLE
-                    // since it's one DB unknown from Talend.
+                    // since it's one DB unknown from Talaxie.
                     // it might not work directly for all DB, but it will generate a standard query.
                     dbType = EDatabaseTypeName.ORACLE_OCI.getDisplayName();
                 }

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: File Output XML Component Plug-in
 Bundle-SymbolicName: org.talend.designer.fileoutputxml;singleton:=true
 Bundle-Version: 8.8.8.qualifier
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Require-Bundle: org.eclipse.ui.workbench,
  org.eclipse.core.runtime,
  org.eclipse.xsd,

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: SQL Builder Plug-in
 Bundle-Version: 8.8.8.qualifier
 Bundle-Activator: org.talend.sqlbuilder.SqlBuilderPlugin
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Bundle-Localization: plugin
 Require-Bundle: org.talend.core.repository,
  org.talend.repository,

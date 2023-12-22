@@ -7,7 +7,7 @@
             STATUS="ALPHA"
 
             COMPATIBILITY="ALL"
-            AUTHOR="Talend"
+            AUTHOR="Talaxie"
             RELEASE_DATE="20130903A"
             STARTABLE="true"
             LOG4J_ENABLED="true"

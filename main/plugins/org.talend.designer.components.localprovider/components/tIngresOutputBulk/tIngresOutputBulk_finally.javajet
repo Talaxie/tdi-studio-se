@@ -6,7 +6,7 @@
 %>
 <%
 	/***********************************************************************/
-	/** Talend standard code                                              **/
+	/** Talaxie standard code                                             **/
 	/***********************************************************************/
 
 	CodeGeneratorArgument codeGenArgument = (CodeGeneratorArgument) argument;

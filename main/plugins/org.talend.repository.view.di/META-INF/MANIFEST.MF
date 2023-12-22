@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.talend.repository.view.di;singleton:=true
 Automatic-Module-Name: org.talend.repository.view.di
 Bundle-Version: 8.8.8.qualifier
 Bundle-Activator: org.talend.repository.view.di.DIRepositoryViewPlugin
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.expressions,

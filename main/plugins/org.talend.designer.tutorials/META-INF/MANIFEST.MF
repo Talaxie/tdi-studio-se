@@ -31,5 +31,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.talend.commons.runtime,
  org.talend.core.runtime
 Bundle-ActivationPolicy: lazy
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Automatic-Module-Name: org.talend.designer.tutorials

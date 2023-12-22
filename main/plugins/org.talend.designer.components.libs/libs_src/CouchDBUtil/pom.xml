@@ -82,7 +82,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Implementation-Vendor>Talend SA</Implementation-Vendor>
+              <Implementation-Vendor>Talaxie SA</Implementation-Vendor>
               <Implementation-Title>${project.artifactId}</Implementation-Title>
               <Implementation-Version>1.0</Implementation-Version>
               <Built-By>${user.name}</Built-By>

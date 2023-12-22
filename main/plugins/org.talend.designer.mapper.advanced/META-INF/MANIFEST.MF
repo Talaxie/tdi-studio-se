@@ -13,6 +13,6 @@ Require-Bundle: org.eclipse.ui,
  org.talend.commons.runtime,
  org.talend.designer.abstractmap
 Eclipse-LazyStart: true
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Export-Package: org.talend.designer.mapper.advanced
 Automatic-Module-Name: org.talend.designer.mapper.advanced

@@ -5,7 +5,7 @@
     VERSION="0.102"
     STATUS="ALPHA"
     COMPATIBILITY="ALL"
-    AUTHOR="Talend"
+    AUTHOR="Talaxie"
     RELEASE_DATE="20070627A"
     STARTABLE="true"
     LOG4J_ENABLED="true"

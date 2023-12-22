@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.talend.designer.scd;singleton:=true
 Bundle-Version: 8.8.8.qualifier
 Bundle-Localization: plugin
 Bundle-ClassPath: .
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Bundle-Activator: org.talend.designer.scd.ScdPlugin
 Require-Bundle: org.apache.commons.lang,
  org.talend.core,

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Repository Generic Plugin Test
 Bundle-SymbolicName: org.talend.repository.generic.test
 Bundle-Version: 8.8.8.qualifier
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Fragment-Host: org.talend.repository.generic
 Require-Bundle: org.junit,
  org.talend.testutils,

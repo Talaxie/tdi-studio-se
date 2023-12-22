@@ -29,7 +29,7 @@
             extensions="java"
             icon="icons/java.gif"
             id="org.talend.designer.core.ui.editor.StandAloneTalendJavaEditor"
-            name="Talend Routines Java Editor">
+            name="Talaxie Routines Java Editor">
       </editor> 
       <editor
             class="org.talend.designer.core.ui.editor.TalendDefaultJavaEditor"
@@ -37,7 +37,7 @@
             default="true"
             icon="icons/java.gif"
             id="org.talend.designer.core.ui.editor.TalendDefaultJavaEditor"
-            name="Talend Default Java Editor"
+            name="Talaxie Default Java Editor"
             symbolicFontName="org.eclipse.jdt.ui.editors.textfont">
          <contentTypeBinding
                contentTypeId="org.eclipse.jdt.core.javaSource">
@@ -290,7 +290,7 @@
          point="org.eclipse.ui.commands">
       <category
             id="Talend"
-            name="Talend"/>
+            name="Talaxie"/>
      <command
 				name="Palette" 
 				categoryId="org.eclipse.ui.category.views" 
@@ -631,7 +631,7 @@
    
    <extension
 	         id="org.talend.designer.runprocess.debug"
-	         name="Talend Job Debugger"
+	         name="Talaxie Job Debugger"
 	         point="org.eclipse.debug.core.launchConfigurationTypes">
 	      <launchConfigurationType
 	            name="Perl Local"
@@ -680,7 +680,7 @@
    </extension>
     <extension point="org.eclipse.ui.actionSets">
     <actionSet
-            label="Talend Run History"
+            label="Talaxie Run History"
             visible="false"
             id="org.talend.debug.ui.launchActionSet">
          <menu

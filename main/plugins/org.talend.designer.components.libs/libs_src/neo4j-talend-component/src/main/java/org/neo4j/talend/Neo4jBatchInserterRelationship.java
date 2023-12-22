@@ -69,8 +69,8 @@ public class Neo4jBatchInserterRelationship extends Neo4jBatchInserterAbstract {
     /**
      * Create the relationship.
      *
-     * @param incoming   Talend incoming object
-     * @param columnList Attribute list of Talend object
+     * @param incoming   Talaxie incoming object
+     * @param columnList Attribute list of Talaxie object
      */
     public void create(Object incoming, List<String> columnList) {
         try {

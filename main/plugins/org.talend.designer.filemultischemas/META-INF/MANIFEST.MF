@@ -24,6 +24,6 @@ Require-Bundle: org.eclipse.ui.workbench,
  org.apache.log4j,
  org.talend.commons.runtime
 Bundle-ActivationPolicy: lazy
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Import-Package: org.eclipse.gef.commands
 Automatic-Module-Name: org.talend.designer.filemultischemas

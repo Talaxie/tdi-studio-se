@@ -37,7 +37,7 @@ Require-Bundle: org.eclipse.ui,
  org.talend.studio.studio-utils,
  avro
 Bundle-ActivationPolicy: lazy
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Export-Package: org.talend.designer.core.generic.constants,
  org.talend.designer.core.generic.context,
  org.talend.designer.core.generic.model,

@@ -11,9 +11,9 @@ public class JobAuditLoggerTest {
 		String root_logger_name = "audit";
 		props.setProperty("root.logger", root_logger_name);
 		props.setProperty("encoding", "UTF-8");
-		props.setProperty("application.name", "Talend Studio");
-		props.setProperty("service.name", "Talend Studio Job");
-		props.setProperty("instance.name", "Talend Studio Job Instance");
+		props.setProperty("application.name", "Talaxie Studio");
+		props.setProperty("service.name", "Talaxie Studio Job");
+		props.setProperty("instance.name", "Talaxie Studio Job Instance");
 		props.setProperty("propagate.appender.exceptions", "none");
 		props.setProperty("log.appender", "file");
 		props.setProperty("appender.file.path", "audit.json");

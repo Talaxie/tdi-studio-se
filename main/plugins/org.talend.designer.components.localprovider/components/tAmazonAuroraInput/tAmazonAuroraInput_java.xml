@@ -6,7 +6,7 @@
     VERSION="0.102"
     STATUS="ALPHA"
     COMPATIBILITY="ALL"
-    AUTHOR="Talend"
+    AUTHOR="Talaxie"
     RELEASE_DATE="20141229A"
     STARTABLE="true"
     LOG4J_ENABLED="true"
@@ -186,7 +186,7 @@
     GROUP="DATASOURCE"
     SHOW_IF="USE_EXISTING_CONNECTION=='false'"
     >
-      <DEFAULT>This option only applies when deploying and running in the Talend Runtime</DEFAULT>
+      <DEFAULT>This option only applies when deploying and running in the Talaxie Runtime</DEFAULT>
     </PARAMETER>
   <PARAMETER
       NAME="SPECIFY_DATASOURCE_ALIAS"

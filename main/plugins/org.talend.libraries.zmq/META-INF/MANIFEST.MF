@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.talend.libraries.zmq
 Bundle-Version: 8.8.8.qualifier
 Bundle-ActivationPolicy: lazy
 Eclipse-BundleShape: dir
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Bundle-ClassPath: .,
  lib/jeromq-0.4.2.jar,
  lib/jnacl-0.1.0.jar

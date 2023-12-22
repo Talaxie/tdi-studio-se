@@ -84,7 +84,7 @@
                point="org.eclipse.ui.commands">
             <command
                   id="org.talend.rcp.show.about.command"
-                  name="About Talend Studio">
+                  name="About Talaxie Studio">
             </command>
          </extension>
 </plugin>

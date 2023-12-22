@@ -6,7 +6,7 @@
     STATUS="BETA"
     
     COMPATIBILITY="ALL"
-    AUTHOR="Talend"
+    AUTHOR="Talaxie"
     RELEASE_DATE="20070602A"
     STARTABLE="true"
 	  PARTITIONING="AUTO"

@@ -32,7 +32,7 @@ public abstract class SchemaElementParameter extends TaCoKitElementParameter {
     private static final String GUESS_BUTTON_PREFIX = "Guess Schema_";
 
     /**
-     * Talend type which denotes String. It is used as default type for schema column
+     * Talaxie type which denotes String. It is used as default type for schema column
      */
     private static final String STRING = "id_String";
 

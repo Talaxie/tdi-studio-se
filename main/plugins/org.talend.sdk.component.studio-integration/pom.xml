@@ -11,7 +11,7 @@
   <packaging>eclipse-plugin</packaging>
 
   <name>org.talend.sdk.component.studio-integration</name>
-  <description>Studio integration of the Talend Component Kit framework.</description>
+  <description>Studio integration of the Talaxie Component Kit framework.</description>
 
   <properties>
     <commons-lang3.version>3.11</commons-lang3.version>

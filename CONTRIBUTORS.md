@@ -1,4 +1,4 @@
-Huge thanks to these people who contributed in making Talend product better:
+Huge thanks to these people who contributed in making Talaxie product better:
 
  - [deki](https://github.com/deki) (Dennis Kieselhorst)
  - [jlolling](https://github.com/jlolling) (Jan -and Miss- Lolling)

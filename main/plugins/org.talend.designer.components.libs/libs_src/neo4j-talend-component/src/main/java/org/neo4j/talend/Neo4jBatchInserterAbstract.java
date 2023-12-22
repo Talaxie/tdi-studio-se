@@ -28,8 +28,8 @@ abstract class Neo4jBatchInserterAbstract {
     /**
      * Create an object (ie a node or a relationship) into the batch database.
      *
-     * @param incoming   Talend incoming object
-     * @param columnList Attribute list of Talend object
+     * @param incoming   Talaxie incoming object
+     * @param columnList Attribute list of Talaxie object
      */
     public abstract void create(Object incoming, List<String> columnList) throws IllegalAccessException;
 

@@ -42,7 +42,7 @@ Export-Package: org.talend.designer.codegen,
  org.talend.designer.codegen.exception,
  org.talend.designer.codegen.model,
  org.talend.designer.codegen.proxy
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Bundle-Activator: org.talend.designer.codegen.CodeGeneratorActivator
 Import-Package: org.apache.commons.lang
 Eclipse-BundleShape: dir

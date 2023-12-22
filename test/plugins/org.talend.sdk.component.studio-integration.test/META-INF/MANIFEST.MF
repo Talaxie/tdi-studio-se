@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.talend.sdk.component.studio-integration.test
 Bundle-Version: 8.8.8.qualifier
 Fragment-Host: org.talend.sdk.component.studio-integration
 Automatic-Module-Name: org.talend.sdk.component.studio-integration.test
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Export-Package: org.talend.sdk.component.studio;
   uses:="org.talend.sdk.component.studio.debounce,
    org.talend.sdk.component.studio.metadata,

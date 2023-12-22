@@ -28,5 +28,5 @@ Export-Package: org.talend.designer.abstractmap,
  org.talend.designer.abstractmap.ui.properties,
  org.talend.designer.abstractmap.ui.visualmap.link,
  org.talend.designer.abstractmap.ui.visualmap.zone
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Automatic-Module-Name: org.talend.designer.abstractmap
