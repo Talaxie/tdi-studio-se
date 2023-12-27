@@ -96,6 +96,7 @@ import org.talend.core.ui.context.nattableTree.ContextNatTableUtils;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.export.ArchiveFileExportOperationFullPath;
 import org.talend.core.ui.export.FileSystemExporterFullPath;
+import org.talend.core.ui.webService.Webhook;
 import org.talend.core.views.IComponentSettingsView;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
@@ -606,14 +607,16 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
         GridData jobScriptGD = new GridData();
         jobScriptGD.horizontalSpan = 3;
         jobScriptButton.setLayoutData(jobScriptGD);
-
-        webhookButton = new Button(optionsComposite, SWT.CHECK | SWT.LEFT);
-        webhookButton.setText("Webhook"); //$NON-NLS-1$
-        webhookButton.setFont(font);
-        GridData webhookGD = new GridData();
-        webhookGD.horizontalSpan = 3;
-        webhookButton.setLayoutData(webhookGD);
-        webhookButton.setSelection(CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_ENABLED));
+    
+        if (CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_ENABLED)) {
+            webhookButton = new Button(optionsComposite, SWT.CHECK | SWT.LEFT);
+            webhookButton.setText("Webhook"); //$NON-NLS-1$
+            webhookButton.setFont(font);
+            GridData webhookGD = new GridData();
+            webhookGD.horizontalSpan = 3;
+            webhookButton.setLayoutData(webhookGD);
+            webhookButton.setSelection(true);
+        }
 
         updateOptionStates();
     }
@@ -1421,23 +1424,33 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
     @Override
     public boolean finish() {
         // TODO Jean Cazaux
-        /*
-        MessageDialog messageDialog = new MessageDialog(
-            DisplayUtils.getDefaultShell(false),
-            "Talaxie debug", //$NON-NLS-1$
-            null,
-            "Confirm message", //$NON-NLS-1$
-            MessageDialog.CONFIRM,
-            new String[] {
-                IDialogConstants.OK_LABEL,
-                IDialogConstants.CANCEL_LABEL
-            },
-            0
-        ); //$NON-NLS-1$
-        if (messageDialog.open() != 0) {
-            return false;
+        if (CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_ENABLED)) {
+            Webhook webhook = new Webhook();
+            String message = webhook.test();
+            message += "getDestinationPath: " + manager.getDestinationPath() + "\n";
+            message += "getSelectedJobVersion: " + manager.getSelectedJobVersion() + "\n";
+            message += "getBundleVersion: " + manager.getBundleVersion() + "\n";
+            message += "getDestinationPath: " + manager.getDestinationPath() + "\n";
+            message += "getOutputSuffix: " + manager.getOutputSuffix() + "\n";
+            message += "getLog4jLevel: " + manager.getLog4jLevel() + "\n";
+            message += "getTopFolderName: " + manager.getTopFolderName() + "\n";
+            MessageDialog messageDialog = new MessageDialog(
+                DisplayUtils.getDefaultShell(false),
+                "Talaxie debug", //$NON-NLS-1$
+                null,
+                message, //$NON-NLS-1$
+                MessageDialog.CONFIRM,
+                new String[] {
+                    IDialogConstants.OK_LABEL,
+                    IDialogConstants.CANCEL_LABEL
+                },
+                0
+            ); //$NON-NLS-1$
+            if (messageDialog.open() != 0) {
+                return false;
+            }
+            // webhook.postTest();
         }
-        */
 
         IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         IComponentSettingsView compSettings = (IComponentSettingsView) page.findView(IComponentSettingsView.ID);
