@@ -15,6 +15,7 @@ package org.talend.repository.ui.wizards.exportjob;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,7 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -1423,34 +1423,6 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
      */
     @Override
     public boolean finish() {
-        // TODO Jean Cazaux
-        if (CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_ENABLED)) {
-            Webhook webhook = new Webhook();
-            String message = webhook.test();
-            message += "getDestinationPath: " + manager.getDestinationPath() + "\n";
-            message += "getSelectedJobVersion: " + manager.getSelectedJobVersion() + "\n";
-            message += "getBundleVersion: " + manager.getBundleVersion() + "\n";
-            message += "getDestinationPath: " + manager.getDestinationPath() + "\n";
-            message += "getOutputSuffix: " + manager.getOutputSuffix() + "\n";
-            message += "getLog4jLevel: " + manager.getLog4jLevel() + "\n";
-            message += "getTopFolderName: " + manager.getTopFolderName() + "\n";
-            MessageDialog messageDialog = new MessageDialog(
-                DisplayUtils.getDefaultShell(false),
-                "Talaxie debug", //$NON-NLS-1$
-                null,
-                message, //$NON-NLS-1$
-                MessageDialog.CONFIRM,
-                new String[] {
-                    IDialogConstants.OK_LABEL,
-                    IDialogConstants.CANCEL_LABEL
-                },
-                0
-            ); //$NON-NLS-1$
-            if (messageDialog.open() != 0) {
-                return false;
-            }
-            // webhook.postTest();
-        }
 
         IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         IComponentSettingsView compSettings = (IComponentSettingsView) page.findView(IComponentSettingsView.ID);
@@ -1558,6 +1530,37 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
 
         if (treeViewer != null) {
             treeViewer.dispose();
+        }
+
+        // TODO : Webhook Jean Cazaux
+        if (CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_ENABLED)) {
+            try {
+                String sendFileResult = Webhook.sendFile(manager.getDestinationPath());
+                HashMap<String, String> jobData = Webhook.JobArchiveCheck(manager.getDestinationPath());
+                Webhook.Deploy(jobData);
+                String message = "Voulez-vous ouvrir le job sur EtlTool ?\n"; //$NON-NLS-1$
+                message += "Projet: " + jobData.get("Projet") + "\n";
+                message += "Sequenceur: " + jobData.get("Sequenceur") + "\n";
+                message += "Version: " + jobData.get("JobVersion") + "\n";
+                MessageDialog messageDialog = new MessageDialog(
+                    DisplayUtils.getDefaultShell(false),
+                    "Talaxie - export de la build vers EtlTool", //$NON-NLS-1$
+                    null,
+                    message, //$NON-NLS-1$
+                    MessageDialog.CONFIRM,
+                    new String[] {
+                        IDialogConstants.OK_LABEL,
+                        IDialogConstants.CANCEL_LABEL
+                    },
+                    0
+                ); //$NON-NLS-1$
+                if (messageDialog.open() == 0) {
+                    URL jobURL = new URL(Webhook.getJobUrl(jobData));
+                    PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser().openURL(jobURL);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         // end
