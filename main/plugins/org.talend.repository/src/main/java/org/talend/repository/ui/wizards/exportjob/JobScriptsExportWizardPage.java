@@ -117,6 +117,8 @@ import org.talend.repository.ui.wizards.exportjob.util.ExportJobUtil;
 import org.talend.repository.utils.EmfModelUtils;
 import org.talend.repository.utils.JobVersionUtils;
 
+import org.eclipse.core.runtime.Status;
+
 /**
  * Page of the Job Scripts Export Wizard. <br/>
  *
@@ -1447,6 +1449,32 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
         if (JobExportType.POJO.equals(jobExportType) || JobExportType.MSESB.equals(jobExportType)
                 || JobExportType.OSGI.equals(jobExportType) || JobExportType.IMAGE.equals(jobExportType)
                 || JobExportType.MSESB_IMAGE.equals(jobExportType)) {
+                    
+            // TODO Jean Cazaux
+            String message = "Info export job #1\n"; //$NON-NLS-1$
+            // message += "getCheckNodes: " + Arrays.asList(getCheckNodes()) + "\n";
+            message += "selectedJobVersion: " + selectedJobVersion + "\n";
+            // message += "manager: " + manager + "\n";
+            message += "Context: " + processItem.getProcess().getDefaultContext() + "\n";
+            message += "originalRootFolderName: " + originalRootFolderName + "\n";
+            message += "getProcessType: " + getProcessType() + "\n";
+            message += "jobExportType: " + jobExportType + "\n";
+            MessageDialog messageDialog = new MessageDialog(
+                DisplayUtils.getDefaultShell(false),
+                "Talaxie - export de la build vers EtlTool", //$NON-NLS-1$
+                null,
+                message, //$NON-NLS-1$
+                MessageDialog.CONFIRM,
+                new String[] {
+                    IDialogConstants.OK_LABEL,
+                    IDialogConstants.CANCEL_LABEL
+                },
+                0
+            ); //$NON-NLS-1$
+            if (messageDialog.open() == 0) {
+                // TODO
+            }
+
             IRunnableWithProgress worker = new IRunnableWithProgress() {
 
                 @Override
@@ -1597,6 +1625,12 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
                 destinationStr = userDir + File.separator + destinationStr;
             }
             exportChoiceMap.put(ExportChoice.addStatistics, Boolean.TRUE);
+            System.out.print("destinationStr : " + destinationStr);
+
+            // TODO: Jean Cazaux
+            ErrorDialog.openError(getContainer().getShell(), "Talaxie Error", "context: " + context.toString(), Status.OK_STATUS);
+            ErrorDialog.openError(getContainer().getShell(), "Talaxie Error", "destinationStr: " + destinationStr, Status.OK_STATUS);
+
             return BuildJobManager.getInstance().buildJobs(destinationStr, checkedNodes, getDefaultFileName(),
                     getSelectedJobVersion(), context.toString(), exportChoiceMap, jobExportType, monitor);
 

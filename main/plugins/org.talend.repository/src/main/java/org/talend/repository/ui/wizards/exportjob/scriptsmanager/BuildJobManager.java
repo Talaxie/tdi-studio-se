@@ -79,11 +79,16 @@ import org.talend.repository.ui.wizards.exportjob.scriptsmanager.JobScriptsManag
 import org.talend.repository.ui.wizards.exportjob.util.ExportJobUtil;
 import org.talend.utils.io.FilesUtils;
 
+import org.apache.log4j.Logger;
+import java.util.Map.Entry;
+
 /**
  * created by ycbai on 2015年5月15日 Detailled comment
  *
  */
 public class BuildJobManager {
+
+    private static final Logger LOGGER = Logger.getLogger(BuildJobManager.class);
 
     private static BuildJobManager instance = null;
 
@@ -216,6 +221,25 @@ public class BuildJobManager {
     public void buildJob(String destinationPath, ProcessItem itemToExport, String version, String context,
             Map<ExportChoice, Object> exportChoiceMap, JobExportType jobExportType, boolean checkCompilationError,
             IProgressMonitor monitor) throws Exception {
+
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("destinationPath: " + destinationPath);
+            LOGGER.info("version: " + version);
+            LOGGER.info("context: " + context);
+            // Map<ExportChoice, Object> exportChoiceMap
+
+            // Utilisez un StringBuilder pour construire la chaîne
+            StringBuilder stringBuilder = new StringBuilder();
+            for (Entry<ExportChoice, Object> entry : exportChoiceMap.entrySet()) {
+                stringBuilder.append(entry.getKey())
+                            .append(": ")
+                            .append(entry.getValue())
+                            .append(System.lineSeparator()); // Ajoute une nouvelle ligne entre chaque entrée
+            }
+            String result = stringBuilder.toString();
+            LOGGER.info("exportChoiceMap: " + result);
+        }
+
         IProgressMonitor pMonitor = new NullProgressMonitor();
         if (monitor != null) {
             pMonitor = monitor;
