@@ -226,6 +226,15 @@
                         name="%jobHierarchyView">
                   </view>
                   
+                  <view
+                        allowMultiple="false"
+                        category="org.talend.core.root"
+                        class="org.talend.designer.core.ui.codereview.JobCodereviewViewPart"
+                        icon="icons/assist.gif"
+                        id="org.talend.designer.core.ui.codereview.JobCodereviewViewPart"
+                        name="%jobCodereviewView">
+                  </view>
+                  
    </extension>
    
    
@@ -237,6 +246,12 @@
             isEditAction="true"
             level="10"
             name="Edit process"/>
+      <Action
+            class="org.talend.designer.core.ui.codereview.OpenRepositoryJobCodereviewAction"
+            id="org.talend.designer.core.ui.codereview.OpenRepositoryJobCodereviewAction"
+            isReadAction="true"
+            level="98"
+            name="Open Job Codereview"/>
       <Action
             class="org.talend.designer.core.ui.action.RunProcess"
             id="org.talend.designer.core.actions.runprocess"

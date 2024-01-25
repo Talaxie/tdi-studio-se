@@ -609,7 +609,7 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
         GridData jobScriptGD = new GridData();
         jobScriptGD.horizontalSpan = 3;
         jobScriptButton.setLayoutData(jobScriptGD);
-    
+
         if (CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_ENABLED)) {
             webhookButton = new Button(optionsComposite, SWT.CHECK | SWT.LEFT);
             webhookButton.setText("Webhook"); //$NON-NLS-1$
