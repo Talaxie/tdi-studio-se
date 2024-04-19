@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -126,6 +127,8 @@ import org.eclipse.core.runtime.Status;
  *
  */
 public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourceExportPage1 {
+
+    private static final Logger LOGGER = Logger.getLogger(JobScriptsExportWizardPage.class);
 
     protected static final String DESTINATION_FILE = "destinationFile";//$NON-NLS-1$
 
@@ -610,7 +613,11 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
         jobScriptGD.horizontalSpan = 3;
         jobScriptButton.setLayoutData(jobScriptGD);
 
-        if (CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_ENABLED)) {
+        if (
+            CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_NEXUS_ENABLED) ||
+            CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_ETLTOOL_ENABLED) ||
+            CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_SCRIPT_ENABLED)
+        ) {
             webhookButton = new Button(optionsComposite, SWT.CHECK | SWT.LEFT);
             webhookButton.setText("Webhook"); //$NON-NLS-1$
             webhookButton.setFont(font);
@@ -1451,6 +1458,7 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
                 || JobExportType.MSESB_IMAGE.equals(jobExportType)) {
                     
             // TODO Jean Cazaux
+            /*
             String message = "Info export job #1\n"; //$NON-NLS-1$
             // message += "getCheckNodes: " + Arrays.asList(getCheckNodes()) + "\n";
             message += "selectedJobVersion: " + selectedJobVersion + "\n";
@@ -1474,6 +1482,7 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
             if (messageDialog.open() == 0) {
                 // TODO
             }
+            */
 
             IRunnableWithProgress worker = new IRunnableWithProgress() {
 
@@ -1560,34 +1569,41 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
             treeViewer.dispose();
         }
 
-        // TODO : Webhook Jean Cazaux
-        if (CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_ENABLED)) {
+        // Export to EtlTool
+        if (isAddWebhook()) {
             try {
-                String sendFileResult = Webhook.sendFile(manager.getDestinationPath());
-                HashMap<String, String> jobData = Webhook.JobArchiveCheck(manager.getDestinationPath());
-                Webhook.Deploy(jobData);
-                String message = "Voulez-vous ouvrir le job sur EtlTool ?\n"; //$NON-NLS-1$
-                message += "Projet: " + jobData.get("Projet") + "\n";
-                message += "Sequenceur: " + jobData.get("Sequenceur") + "\n";
-                message += "Version: " + jobData.get("JobVersion") + "\n";
-                MessageDialog messageDialog = new MessageDialog(
-                    DisplayUtils.getDefaultShell(false),
-                    "Talaxie - export de la build vers EtlTool", //$NON-NLS-1$
-                    null,
-                    message, //$NON-NLS-1$
-                    MessageDialog.CONFIRM,
-                    new String[] {
-                        IDialogConstants.OK_LABEL,
-                        IDialogConstants.CANCEL_LABEL
-                    },
-                    0
-                ); //$NON-NLS-1$
-                if (messageDialog.open() == 0) {
-                    URL jobURL = new URL(Webhook.getJobUrl(jobData));
-                    PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser().openURL(jobURL);
+                String projectLabel = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+                List<String> defaultFileName = getDefaultFileName();
+                HashMap<String, String> jobData = Webhook.export(manager.getDestinationPath(), projectLabel, defaultFileName.get(0), selectedJobVersion);
+
+                if (CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_ETLTOOL_ENABLED)) {
+                    String message = "Voulez-vous ouvrir le job sur EtlTool ?\n"; //$NON-NLS-1$
+                    message += "Projet: " + jobData.get("Projet") + "\n";
+                    message += "Sequenceur: " + jobData.get("Sequenceur") + "\n";
+                    message += "Version: " + jobData.get("JobVersion") + "\n";
+                    MessageDialog messageDialog = new MessageDialog(
+                        DisplayUtils.getDefaultShell(false),
+                        "Talaxie - export de la build vers EtlTool", //$NON-NLS-1$
+                        null,
+                        message, //$NON-NLS-1$
+                        MessageDialog.CONFIRM,
+                        new String[] {
+                            IDialogConstants.OK_LABEL,
+                            IDialogConstants.CANCEL_LABEL
+                        },
+                        0
+                    ); //$NON-NLS-1$
+                    if (messageDialog.open() == 0) {
+                        URL jobURL = new URL(Webhook.getJobUrl(jobData));
+                        PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser().openURL(jobURL);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                if (LOGGER.isInfoEnabled()) {
+                    LOGGER.info("Webhook");
+                    LOGGER.info(e);
+                }
             }
         }
 
@@ -1626,10 +1642,6 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
             }
             exportChoiceMap.put(ExportChoice.addStatistics, Boolean.TRUE);
             System.out.print("destinationStr : " + destinationStr);
-
-            // TODO: Jean Cazaux
-            ErrorDialog.openError(getContainer().getShell(), "Talaxie Error", "context: " + context.toString(), Status.OK_STATUS);
-            ErrorDialog.openError(getContainer().getShell(), "Talaxie Error", "destinationStr: " + destinationStr, Status.OK_STATUS);
 
             return BuildJobManager.getInstance().buildJobs(destinationStr, checkedNodes, getDefaultFileName(),
                     getSelectedJobVersion(), context.toString(), exportChoiceMap, jobExportType, monitor);

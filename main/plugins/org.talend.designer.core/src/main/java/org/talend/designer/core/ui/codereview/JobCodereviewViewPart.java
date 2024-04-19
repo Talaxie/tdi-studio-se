@@ -60,11 +60,12 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -88,7 +89,6 @@ import org.talend.designer.core.ui.IJobCodereviewViewPart;
 import org.talend.repository.ProjectManager;
 
 import org.talend.designer.core.ui.codereview.CodereviewViewerProvider;
-import org.talend.designer.core.ui.codereview.CodereviewDependencyViewerProvider;
 import org.talend.designer.core.ui.codereview.CodereviewToggleViewAction;
 import org.talend.designer.core.ui.codereview.CodereviewToggleOrientationAction;
 import org.talend.designer.core.ui.codereview.CodereviewFocusOnJobAction;
@@ -116,34 +116,39 @@ public class JobCodereviewViewPart extends ViewPart implements IJobCodereviewVie
     // input job or null
     private IProcess2 inputProcess;
 
+    private IProcess2 inputProcessSelected;
+
     private IDialogSettings fDialogSettings;
 
     private CodereviewToggleViewAction[] fViewActions;
 
     private int fCurrentViewerIndex;
 
-    private PageBook fPagebook;
+    private Composite mainComposite;
 
-    private Label fNoCodereviewShownLabel;
-    List<HashMap<String, String>> codereviewItems;
+    private PageBook mainPageBook;
 
-    private SashForm fTypeMethodsSplitter;
+    private SashForm mainSashForm;
 
-    private ViewForm fTypeViewerViewForm;
+    private CLabel headerLabel;
 
-    private ViewForm dependencyViewerViewForm;
+    private ViewForm headerViewForm;
 
-    private CLabel dependencyViewerPaneLabel;
+    private PageBook headerPageBook;
 
-    private PageBook fViewerbook;
+    private ViewForm bodyViewForm;
+
+    private CLabel bodyLabel;
 
     private JobCodereviewViewer[] fAllViewers;
 
-    private Label fEmptyTypesViewer;
+    private CLabel fEmptyTypesViewer;
 
-    private Composite fParent;
+    private List<HashMap<String, String>> codereviewItems;
 
     private TableViewer dependencyViewer;
+
+    private Map<Object, Button> dependencyButtons;
 
     private JobCodereviewLifeCycle fCodereviewLifeCycle;
 
@@ -154,6 +159,14 @@ public class JobCodereviewViewPart extends ViewPart implements IJobCodereviewVie
     private CompositeActionGroup fActionGroups;
 
     private CodereviewFocusOnJobAction focusOnTypeAction = null;
+
+    String showEmptyLabel = Messages.getString("JobCodereviewViewPart.showDecription"); //$NON-NLS-1$
+
+    private int fCurrentLayout;
+
+    private boolean fInComputeLayout;
+
+    private SelectionProviderMediator fSelectionProviderMediator;
 
     /**
      * Constructor
@@ -181,58 +194,35 @@ public class JobCodereviewViewPart extends ViewPart implements IJobCodereviewVie
         focusOnTypeAction = new CodereviewFocusOnJobAction(this);
     }
 
-    String showEmptyLabel = Messages.getString("JobCodereviewViewPart.showDecription"); //$NON-NLS-1$
-
-    private int fCurrentLayout;
-
-    private boolean fInComputeLayout;
-
-    private SelectionProviderMediator fSelectionProviderMediator;
-
     @Override
     public void createPartControl(Composite container) {
-        fParent = container;
-        addResizeListener(fParent);
-        fPagebook = new PageBook(container, SWT.NONE);
-        fPagebook.setBackground(new Color(255, 255, 255));
+        mainComposite = container;
+        addResizeListener(mainComposite);
+        mainPageBook = new PageBook(container, SWT.NONE);
+        mainPageBook.setBackground(new Color(255, 255, 255));
 
-        fNoCodereviewShownLabel = new Label(fPagebook, SWT.TOP + SWT.LEFT + SWT.WRAP);
-        fNoCodereviewShownLabel.setText(showEmptyLabel);
-        fNoCodereviewShownLabel.setBackground(new Color(255, 255, 255));
+        headerLabel = new CLabel(mainPageBook, SWT.TOP + SWT.LEFT + SWT.WRAP);
+        headerLabel.setText(showEmptyLabel);
+        headerLabel.setBackground(new Color(255, 255, 255));
 
-        // page 2 of page book (viewers)
-        fTypeMethodsSplitter = new SashForm(fPagebook, SWT.VERTICAL);
-        fTypeMethodsSplitter.setVisible(false);
+        mainSashForm = new SashForm(mainPageBook, SWT.VERTICAL);
+        mainSashForm.setVisible(false);
 
-        fTypeViewerViewForm = new ViewForm(fTypeMethodsSplitter, SWT.NONE);
-        fTypeViewerViewForm.setBackground(new Color(236, 237, 239));
+        headerViewForm = new ViewForm(mainSashForm, SWT.NONE);
+        headerViewForm.setContent(createHeaderViewerControl(headerViewForm));
 
-        Control typeViewerControl = createTypeViewerControl(fTypeViewerViewForm);
-        fTypeViewerViewForm.setContent(typeViewerControl);
-
-        dependencyViewerViewForm = new ViewForm(fTypeMethodsSplitter, SWT.NONE);
-        dependencyViewerViewForm.setBackground(new Color(236, 237, 239));
-        fTypeMethodsSplitter.setWeights(new int[] { 30, 70 });
-
-        /*
-        Control dependencyViewerPart = createMethodViewerControl(dependencyViewerViewForm);
-        dependencyViewerViewForm.setContent(dependencyViewerPart);
-        */
-        dependencyViewerViewForm.setContent(createTableControl(dependencyViewerViewForm));
-
-        dependencyViewerPaneLabel = new CLabel(dependencyViewerViewForm, SWT.NONE);
-        dependencyViewerViewForm.setTopLeft(dependencyViewerPaneLabel);
-
-        ToolBar methodViewerToolBar = new ToolBar(dependencyViewerViewForm, SWT.FLAT | SWT.WRAP);
-        dependencyViewerViewForm.setTopCenter(methodViewerToolBar);
+        bodyViewForm = new ViewForm(mainSashForm, SWT.BORDER | SWT.FLAT);
+        bodyViewForm.setBackground(new Color(236, 237, 239));
+        mainSashForm.setWeights(new int[] { 30, 70 });
+        bodyViewForm.setContent(createBodyViewerControl(bodyViewForm));
 
         initDragAndDrop();
 
         MenuManager menu = new MenuManager();
         menu.add(focusOnTypeAction);
-        fNoCodereviewShownLabel.setMenu(menu.createContextMenu(fNoCodereviewShownLabel));
+        headerLabel.setMenu(menu.createContextMenu(headerLabel));
 
-        fPagebook.showPage(fNoCodereviewShownLabel);
+        mainPageBook.showPage(headerLabel);
 
         int layout;
         try {
@@ -252,8 +242,7 @@ public class JobCodereviewViewPart extends ViewPart implements IJobCodereviewVie
         IActionBars actionBars = getViewSite().getActionBars();
         IMenuManager viewMenu = actionBars.getMenuManager();
 
-        // IMenuManager layoutSubMenu = new MenuManager(TypeCodereviewMessages.TypeCodereviewViewPart_layout_submenu);
-        IMenuManager layoutSubMenu = new MenuManager(Messages.getString("FocusOnJobAction.TypeCodereviewViewPart_layout_submenu")); //$NON-NLS-1$
+        IMenuManager layoutSubMenu = new MenuManager(Messages.getString("FocusOnJobAction.TypeHierarchyViewPart_layout_submenu")); //$NON-NLS-1$
         viewMenu.add(layoutSubMenu);
         for (int i = 0; i < fToggleOrientationActions.length; i++) {
             layoutSubMenu.add(fToggleOrientationActions[i]);
@@ -271,28 +260,27 @@ public class JobCodereviewViewPart extends ViewPart implements IJobCodereviewVie
         getSite().setSelectionProvider(fSelectionProviderMediator);
         ActionGroup[] actionGroups = new ActionGroup[] { new JobActionGroup() };
         fActionGroups = new CompositeActionGroup(actionGroups);
-
         fActionGroups.fillActionBars(actionBars);
     }
 
     /**
-     * bqian Comment method "createTypeViewerControl".
+     * bqian Comment method "createHeaderViewerControl".
      *
      * @param typeViewerViewForm
      * @return
      */
-    private Control createTypeViewerControl(Composite parent) {
-        fViewerbook = new PageBook(parent, SWT.NULL);
-        fViewerbook.setBackground(new Color(0, 0, 255));
+    private Control createHeaderViewerControl(Composite parent) {
+        headerPageBook = new PageBook(parent, SWT.NULL);
+        headerPageBook.setBackground(new Color(0, 0, 255));
 
         // Create the viewers
-        JobCodereviewViewer superTypesViewer = new SuperJobCodereviewViewer(fViewerbook, fCodereviewLifeCycle, this);
+        JobCodereviewViewer superTypesViewer = new SuperJobCodereviewViewer(headerPageBook, fCodereviewLifeCycle, this);
         initializeTypesViewer(superTypesViewer);
-        JobCodereviewViewer subTypesViewer = new SubJobCodereviewViewer(fViewerbook, fCodereviewLifeCycle, this);
+        JobCodereviewViewer subTypesViewer = new SubJobCodereviewViewer(headerPageBook, fCodereviewLifeCycle, this);
         initializeTypesViewer(subTypesViewer);
         fAllViewers = new JobCodereviewViewer[2];
-        fAllViewers[HIERARCHY_MODE_SUBTYPES] = subTypesViewer;
         fAllViewers[HIERARCHY_MODE_SUPERTYPES] = superTypesViewer;
+        fAllViewers[HIERARCHY_MODE_SUBTYPES] = subTypesViewer;
 
         int currViewerIndex;
         try {
@@ -304,7 +292,7 @@ public class JobCodereviewViewPart extends ViewPart implements IJobCodereviewVie
             currViewerIndex = HIERARCHY_MODE_SUBTYPES;
         }
 
-        fEmptyTypesViewer = new Label(fViewerbook, SWT.TOP | SWT.LEFT | SWT.WRAP);
+        fEmptyTypesViewer = new CLabel(headerPageBook, SWT.TOP | SWT.LEFT | SWT.WRAP);
 
         for (int i = 0; i < fAllViewers.length; i++) {
             fAllViewers[i].setInput(fAllViewers[i]);
@@ -314,458 +302,54 @@ public class JobCodereviewViewPart extends ViewPart implements IJobCodereviewVie
         fCurrentViewerIndex = -1;
         setCodereviewMode(currViewerIndex);
 
-        return fViewerbook;
+        return headerPageBook;
     }
 
-    private Control createMethodViewerControl(Composite parent) {
-        dependencyViewer = new TableViewer(parent);
+    private Control createBodyViewerControl(Composite parent) {
+        Composite compositeMain = new Composite(parent, SWT.NONE);
+        compositeMain.setBackground(new Color(236, 237, 239));
+        GridLayout mainGridLayout = new GridLayout(2, false);
+        mainGridLayout.horizontalSpacing = 0;
+        mainGridLayout.verticalSpacing = 0;
+        mainGridLayout.marginWidth = 0;
+        mainGridLayout.marginHeight = 0;
+        mainGridLayout.marginTop = 0;
+        mainGridLayout.marginBottom = 0;
+        mainGridLayout.marginRight = 0;
+        mainGridLayout.marginLeft = 0;
+        compositeMain.setLayout(mainGridLayout);
 
-        CodereviewDependencyViewerProvider provider = new CodereviewDependencyViewerProvider(this.fCodereviewLifeCycle);
-        dependencyViewer.setContentProvider(provider);
-        dependencyViewer.setLabelProvider(provider);
-        Control control = dependencyViewer.getTable();
+        bodyLabel = new CLabel(compositeMain, SWT.NONE);
+        bodyLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-        String popupId = "DependencyViewer_ContextMenu"; //$NON-NLS-1$
-        MenuManager menuMgr = new MenuManager();
-        menuMgr.setRemoveAllWhenShown(true);
-        menuMgr.addMenuListener(new IMenuListener() {
-
-            public void menuAboutToShow(IMenuManager menu) {
-                fillDependencyViewerContextMenu(menu);
+        Button bodyButton = new Button(compositeMain, SWT.FLAT);
+        bodyButton.setImage(ImageDescriptor.createFromURL(this.getClass().getResource("/icons/arrow_refresh.png")).createImage());
+        bodyButton.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
+        bodyButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+            	fillCodereviewItems(inputProcessSelected);
             }
         });
-        Menu menu = menuMgr.createContextMenu(control);
-        control.setMenu(menu);
-        getSite().registerContextMenu(popupId, menuMgr, dependencyViewer);
 
-        return control;
-    }
-
-    @Override
-    public void setFocus() {
-        fPagebook.setFocus();
-
-    }
-
-    private JobCodereviewViewer getCurrentViewer() {
-        return fAllViewers[fCurrentViewerIndex];
-    }
-
-    public void setCodereviewMode(int viewerIndex) {
-        Assert.isNotNull(fAllViewers);
-        if (viewerIndex < fAllViewers.length && fCurrentViewerIndex != viewerIndex) {
-            fCurrentViewerIndex = viewerIndex;
-
-            updateCodereviewViewer(true);
-            if (inputProcess != null) {
-                ISelection currSelection = getCurrentViewer().getSelection();
-                if (currSelection == null || currSelection.isEmpty()) {
-                    internalSelectType(inputProcess, false);
-                    currSelection = getCurrentViewer().getSelection();
-                }
-            }
-            updateTitle();
-
-            // fDialogSettings.put(DIALOGSTORE_HIERARCHYVIEW, viewerIndex);
-            getCurrentViewer().getTree().setFocus();
-        }
-        for (int i = 0; i < fViewActions.length; i++) {
-            CodereviewToggleViewAction action = fViewActions[i];
-            action.setChecked(fCurrentViewerIndex == action.getViewerIndex());
-        }
-    }
-
-    private void internalSelectType(IProcess2 process, boolean reveal) {
-        JobCodereviewViewer viewer = getCurrentViewer();
-    }
-
-    /*
-     * When the input changed or the codereview pane becomes visible, <code>updateCodereviewViewer<code> brings up the
-     * correct view and refreshes the current tree
-     */
-    private void updateCodereviewViewer(final boolean doExpand) {
-        if (inputProcess == null) {
-            fNoCodereviewShownLabel.setText(showEmptyLabel);
-            fPagebook.showPage(fNoCodereviewShownLabel);
-        } else {
-            if (getCurrentViewer().containsElements() != null) {
-                Runnable runnable = new Runnable() {
-
-                    public void run() {
-                        getCurrentViewer().updateContent(doExpand); // refresh
-                        updateMethodViewer(inputProcess);
-                    }
-                };
-                BusyIndicator.showWhile(getDisplay(), runnable);
-                if (!isChildVisible(fViewerbook, getCurrentViewer().getControl())) {
-                    setViewerVisibility(true);
-                }
-            } else {
-                fEmptyTypesViewer.setText(Messages.getString("JobCodereviewViewPart.reason")); //$NON-NLS-1$
-                setViewerVisibility(false);
-            }
-        }
-    }
-
-    /*
-     * Toggles between the empty viewer page and the codereview
-     */
-    private void setViewerVisibility(boolean showCodereview) {
-        if (showCodereview) {
-            fViewerbook.showPage(getCurrentViewer().getControl());
-        } else {
-            fViewerbook.showPage(fEmptyTypesViewer);
-        }
-    }
-
-    public IProcess2 getInputProcess() {
-        return inputProcess;
-    }
-
-    public void setInputProcess(IProcess2 process) {
-        updateInput(process);
-    }
-
-    public int getCodereviewMode() {
-        return fCurrentViewerIndex;
-    }
-
-    private Display getDisplay() {
-        if (fPagebook != null && !fPagebook.isDisposed()) {
-            return fPagebook.getDisplay();
-        }
-        return null;
-    }
-
-    private boolean isChildVisible(Composite pb, Control child) {
-        Control[] children = pb.getChildren();
-        for (int i = 0; i < children.length; i++) {
-            if (children[i] == child && children[i].isVisible())
-                return true;
-        }
-        return false;
-    }
-
-    /*
-     * Changes the input to a new type
-     *
-     * @param inputElement
-     */
-    private void updateInput(IProcess2 newProcess) {
-        IProcess2 prevInput = inputProcess;
-        if (newProcess == null) {
-            clearInput();
-        } else {
-            inputProcess = newProcess;
-            fNoCodereviewShownLabel.setText(Messages.getString("JobCodereviewMessages.JobCodereviewViewPart_createinput", getJobLabel()));
-            try {
-                fCodereviewLifeCycle.ensureRefreshedTypeCodereview(inputProcess, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-            } catch (InvocationTargetException e) {
-                org.talend.commons.ui.runtime.exception.ExceptionHandler.process(e);
-                clearInput();
-                return;
-            } catch (InterruptedException e) {
-                fNoCodereviewShownLabel.setText(showEmptyLabel);
-                return;
-            }
-
-            // internalSelectType(null, false); // clear selection
-            updateCodereviewViewer(true);
-            internalSelectType(inputProcess, true);
-            updateToolbarButtons();
-            updateTitle();
-            fPagebook.showPage(fTypeMethodsSplitter);
-        }
-    }
-
-    private void clearInput() {
-        inputProcess = null;
-        fCodereviewLifeCycle.freeCodereview();
-
-        updateCodereviewViewer(false);
-        updateToolbarButtons();
-    }
-
-    private void updateToolbarButtons() {
-        // boolean isType = inputProcess instanceof IType;
-        // for (int i = 0; i < fViewActions.length; i++) {
-        // CodereviewToggleViewAction action = fViewActions[i];
-        // if (action.getViewerIndex() == HIERARCHY_MODE_CLASSIC) {
-        // action.setEnabled(fInputElement != null);
-        // } else {
-        // action.setEnabled(isType);
-        // }
-        // }
-    }
-
-    private void updateTitle() {
-        String viewerTitle = getCurrentViewer().getTitle();
-
-        String tooltip;
-        String title;
-        if (inputProcess != null) {
-            String[] args = new String[] { viewerTitle, getJobLabel(), getProjectLabel() };
-            title = Messages.getString("JobCodereviewMessages.JobCodereviewViewPart_title", args); //$NON-NLS-1$
-            tooltip = Messages.getString("JobCodereviewMessages.JobCodereviewViewPart_tooltip", args); //$NON-NLS-1$
-        } else {
-            title = ""; //$NON-NLS-1$
-            tooltip = viewerTitle;
-        }
-        setContentDescription(title);
-        setTitleToolTip(tooltip);
-    }
-
-    private String getJobLabel() {
-        return inputProcess.getLabel();
-    }
-
-    private String getProjectLabel() {
-        org.talend.core.model.properties.Project project = ProjectManager.getInstance().getProject(inputProcess.getProperty().getItem());
-        return project.getTechnicalLabel();
-    }
-
-    private void initDragAndDrop() {
-        for (int i = 0; i < fAllViewers.length; i++) {
-            addDropAdapters(fAllViewers[i]);
-        }
-
-        // DND on empty codereview
-        DropTarget dropTarget = new DropTarget(fPagebook, DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK | DND.DROP_DEFAULT);
-        dropTarget.setTransfer(new Transfer[] { LocalSelectionTransfer.getTransfer() });
-        dropTarget.addDropListener(new JobCodereviewTransferDropAdapter(this));
-    }
-
-    private void addDropAdapters(AbstractTreeViewer viewer) {
-        Transfer[] transfers = new Transfer[] { LocalSelectionTransfer.getTransfer() };
-        int ops = DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK | DND.DROP_DEFAULT;
-        DelegatingDropAdapter delegatingDropAdapter = new DelegatingDropAdapter();
-        delegatingDropAdapter.addDropTargetListener(new JobCodereviewTransferDropAdapter(this));
-        viewer.addDropSupport(ops, transfers, delegatingDropAdapter);
-    }
-
-    protected void doSelectionChanged(SelectionChangedEvent e) {
-        if (e.getSelectionProvider() == this.dependencyViewer) {
-
-        } else {
-            jobSelectionChanged(e.getSelection());
-        }
-    }
-
-    private void jobSelectionChanged(ISelection sel) {
-        if (sel instanceof IStructuredSelection) {
-            Object object = ((IStructuredSelection) sel).getFirstElement();
-            if (object == null) {
-                return;
-            }
-            IProcess2 process = (IProcess2) object;
-            updateMethodViewer(process);
-        }
-    }
-
-    private void updateMethodViewer(final IProcess2 input) {
-        if (!CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_ENABLED)) {
-            dependencyViewerPaneLabel.setText("No webhook defined !");
-            dependencyViewer.getTable().setVisible(false);
-            return;
-        }
-        dependencyViewer.getTable().setVisible(true);
-        
-        if (input == dependencyViewer.getInput()) {
-            if (input != null) {
-                Runnable runnable = new Runnable() {
-                    public void run() {
-                        dependencyViewer.refresh(); // refresh
-                    }
-                };
-                BusyIndicator.showWhile(getDisplay(), runnable);
-            }
-        } else {
-            if (input != null) {
-                ILabelProvider provider = (ILabelProvider) getCurrentViewer().getLabelProvider();
-                dependencyViewerPaneLabel.setText(provider.getText(input));
-                dependencyViewerPaneLabel.setImage(provider.getImage(input));
-
-                // Get Codereview data
-                String jobName = input.getProperty().getItem().getProperty().getDisplayName();
-                org.talend.core.model.properties.Project project = ProjectManager.getInstance().getProject(input.getProperty().getItem());
-                String jobXmlLocation = 
-                    ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString() +
-                    File.separator +
-                    project.getTechnicalLabel() +
-                    File.separator +
-                    "process" +
-                    File.separator +
-                    input.getProperty().getItem().getState().getPath().replaceFirst("Regex", "") +
-                    File.separator +
-                    jobName +
-                    "_" + input.getVersion() + ".item";
-                String xmlText = "";
-                try {
-                    File file = new File(jobXmlLocation);
-                    Scanner sc = new Scanner(file);
-                    sc.useDelimiter("\\Z");
-                    xmlText = sc.next();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    if (LOGGER.isInfoEnabled()) {
-                        LOGGER.info("Get file error : " + jobXmlLocation);
-                    }
-                }
-                codereviewItems = Webhook.codeReviewAnalyseText("Talend", jobName, xmlText);
-                dependencyViewer.setContentProvider(ArrayContentProvider.getInstance());
-                dependencyViewer.setInput(codereviewItems);
-            } else {
-                dependencyViewerPaneLabel.setText(""); //$NON-NLS-1$
-                dependencyViewerPaneLabel.setImage(null);
-            }
-            /*
-            Runnable runnable = new Runnable() {
-
-                public void run() {
-                    dependencyViewer.setInput(input); // refresh
-                }
-            };
-            BusyIndicator.showWhile(getDisplay(), runnable);
-            */
-        }
-    }
-
-    public void setViewLayout(int layout) {
-        if (fCurrentLayout != layout || layout == VIEW_LAYOUT_AUTOMATIC) {
-            fInComputeLayout = true;
-            try {
-                boolean methodViewerNeedsUpdate = false;
-
-                if (this.dependencyViewerViewForm != null && !dependencyViewerViewForm.isDisposed()
-                        && fTypeMethodsSplitter != null && !fTypeMethodsSplitter.isDisposed()) {
-
-                    boolean horizontal = false;
-                    if (layout == VIEW_LAYOUT_SINGLE) {
-                        dependencyViewerViewForm.setVisible(false);
-                        // showMembersInCodereview(false);
-                        updateMethodViewer(null);
-                    } else {
-                        if (fCurrentLayout == VIEW_LAYOUT_SINGLE) {
-                            dependencyViewerViewForm.setVisible(true);
-                            methodViewerNeedsUpdate = true;
-                        }
-                        if (layout == VIEW_LAYOUT_AUTOMATIC) {
-                            if (fParent != null && !fParent.isDisposed()) {
-                                Point size = fParent.getSize();
-                                if (size.x != 0 && size.y != 0) {
-                                    // bug 185397 - Codereview View flips orientation multiple times on resize
-                                    // Control viewFormToolbar = fTypeViewerViewForm.getTopLeft();
-                                    // if (viewFormToolbar != null && !viewFormToolbar.isDisposed() &&
-                                    // viewFormToolbar.isVisible()) {
-                                    // size.y -= viewFormToolbar.getSize().y;
-                                    // }
-                                    horizontal = size.x > size.y;
-                                }
-                            }
-                            if (fCurrentLayout == VIEW_LAYOUT_AUTOMATIC) {
-                                boolean wasHorizontal = fTypeMethodsSplitter.getOrientation() == SWT.HORIZONTAL;
-                                if (wasHorizontal == horizontal) {
-                                    return; // no real change
-                                }
-                            }
-
-                        } else if (layout == VIEW_LAYOUT_HORIZONTAL) {
-                            horizontal = true;
-                        }
-                        fTypeMethodsSplitter.setOrientation(horizontal ? SWT.HORIZONTAL : SWT.VERTICAL);
-                    }
-                    // updateMainToolbar(horizontal);
-                    fTypeMethodsSplitter.layout();
-                }
-                if (methodViewerNeedsUpdate) {
-                    jobSelectionChanged(getCurrentViewer().getSelection());
-                }
-                fDialogSettings.put(DIALOGSTORE_VIEWLAYOUT, layout);
-                fCurrentLayout = layout;
-
-                updateCheckedState();
-            } finally {
-                fInComputeLayout = false;
-            }
-        }
-    }
-
-    private void addResizeListener(Composite parent) {
-        parent.addControlListener(new ControlListener() {
-
-            public void controlMoved(ControlEvent e) {
-            }
-
-            public void controlResized(ControlEvent e) {
-                if (getViewLayout() == VIEW_LAYOUT_AUTOMATIC && !fInComputeLayout) {
-                    setViewLayout(VIEW_LAYOUT_AUTOMATIC);
-                }
-            }
-        });
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jdt.ui.ITypeCodereviewViewPart#getViewLayout()
-     */
-    public int getViewLayout() {
-        return fCurrentLayout;
-    }
-
-    private void updateCheckedState() {
-        for (int i = 0; i < fToggleOrientationActions.length; i++) {
-            fToggleOrientationActions[i].setChecked(getViewLayout() == fToggleOrientationActions[i].getOrientation());
-        }
-    }
-
-    private void initializeTypesViewer(final JobCodereviewViewer typesViewer) {
-        // typesViewer.getControl().setVisible(false);
-        typesViewer.initContextMenu(new IMenuListener() {
-            public void menuAboutToShow(IMenuManager menu) {
-                fillJobViewerContextMenu(typesViewer, menu);
-            }
-        }, getSite());
-
-        typesViewer.addPostSelectionChangedListener(fSelectionChangedListener);
-    }
-
-    private void fillJobViewerContextMenu(JobCodereviewViewer viewer, IMenuManager menu) {
-        // viewer entries
-        // ISelection selection = viewer.getSelection();
-
-        // if (focusOnSelectionAction.canActionBeAdded())
-        // menu.appendToGroup(GROUP_FOCUS, focusOnSelectionAction);
-        // menu.appendToGroup(GROUP_FOCUS, fFocusOnTypeAction);
-
-        menu.add(focusOnTypeAction);
-
-        fActionGroups.setContext(new ActionContext(getSite().getSelectionProvider().getSelection()));
-        fActionGroups.fillContextMenu(menu);
-        fActionGroups.setContext(null);
-    }
-
-    /*
-     * Creates the context menu for the method viewer
-     */
-    private void fillDependencyViewerContextMenu(IMenuManager menu) {
-        // viewer entries
-        fActionGroups.setContext(new ActionContext(getSite().getSelectionProvider().getSelection()));
-        fActionGroups.fillContextMenu(menu);
-        fActionGroups.setContext(null);
-    }
-
-    private Control createTableControl(Composite parent) {
-        dependencyViewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		dependencyViewer.getTable().setHeaderBackground(new Color(240, 241, 243));
-		dependencyViewer.getTable().setHeaderForeground(new Color(96, 125, 139));
-        dependencyViewer.getTable().setBackground(new Color(250, 250, 250));
+        dependencyViewer = new TableViewer(compositeMain, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
+        Table dependencyTable = dependencyViewer.getTable();
+        GridData dependencyGridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
+        dependencyGridData.horizontalIndent = 0;
+        dependencyGridData.verticalIndent = 0;
+        dependencyTable.setLayoutData(dependencyGridData);
+		dependencyTable.setHeaderBackground(new Color(240, 241, 243));
+		dependencyTable.setHeaderForeground(new Color(96, 125, 139));
+        // dependencyTable.setBackground(new Color(250, 250, 250));
+        dependencyTable.setHeaderVisible(true);
+        dependencyTable.setLinesVisible(true);
+        dependencyButtons = new HashMap<Object, Button>();
 
         // Column type
         TableViewerColumn viewerColumn = new TableViewerColumn(dependencyViewer, SWT.NONE);
         TableColumn column = viewerColumn.getColumn();
         column.setText("");
-        column.setWidth(4);
+        column.setWidth(2);
         column.setAlignment(SWT.CENTER);
         column.setResizable(false);
         column.setMoveable(false);
@@ -878,7 +462,7 @@ public class JobCodereviewViewPart extends ViewPart implements IJobCodereviewVie
         viewerColumn.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
-                return ((HashMap<String, String>)element).get("componentName");
+                return ((HashMap<String, String>)element).get("UNIQUE_NAME");
             }
         });
 
@@ -890,63 +474,478 @@ public class JobCodereviewViewPart extends ViewPart implements IJobCodereviewVie
         column.setResizable(true);
         column.setMoveable(true);
         viewerColumn.setLabelProvider(new ColumnLabelProvider() {
-            //make sure you dispose these buttons when viewer input changes
-            Map<Object, Button> buttons = new HashMap<Object, Button>();
-
 
             @Override
             public void update(ViewerCell cell) {
             	if (
             		((HashMap<String, String>)cell.getElement()).containsKey("Url") &&
             		!((HashMap<String, String>)cell.getElement()).get("Url").equals("")
-	            ) {
+            	) {
                     String url = ((HashMap<String, String>)cell.getElement()).get("Url");
 	                TableItem item = (TableItem) cell.getItem();
 	                Button button;
-	                if(buttons.containsKey(cell.getElement()))
-	                {
-	                    button = buttons.get(cell.getElement());
+	                if(dependencyButtons.containsKey(cell.getElement())) {
+	                    button = dependencyButtons.get(cell.getElement());
+	                    button.setVisible(false);
+	                    button.dispose();
 	                }
-	                else
-	                {
-	                    button = new Button((Composite) cell.getViewerRow().getControl(),SWT.NONE);
-                        button.setImage(ImageDescriptor.createFromURL(this.getClass().getResource("/icons/web.png")).createImage());
-                        button.setToolTipText("Open web documentation");
-	                    button.addSelectionListener(new SelectionAdapter() {
-	
-	                        @Override
-	                        public void widgetSelected(SelectionEvent event) {
-                                if (LOGGER.isInfoEnabled()) {
-                                    LOGGER.info("TODO: open link");
-                                    LOGGER.info(url);
-                                }
-                                try {
-                                    TalendBrowserLaunchHelper.openURL(url);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-	    					}
-	
-	                    });
-	                    buttons.put(cell.getElement(), button);
-	                }
+	                button = new Button((Composite) cell.getViewerRow().getControl(),SWT.NONE);
+	                button.setImage(ImageDescriptor.createFromURL(this.getClass().getResource("/icons/web.png")).createImage());
+	                button.addSelectionListener(new SelectionAdapter() {
+	                    @Override
+	                    public void widgetSelected(SelectionEvent event) {
+                            TalendBrowserLaunchHelper.openURL(url);
+						}
+	                });
+	                dependencyButtons.put(cell.getElement(), button);
 	                TableEditor editor = new TableEditor(item.getParent());
 	                editor.grabHorizontal  = true;
 	                editor.grabVertical = true;
 	                editor.setEditor(button , item, cell.getColumnIndex());
 	                editor.layout();
-	            }
+            	}
             }
-
         });
 
-        Table table = dependencyViewer.getTable();
-        table.setHeaderVisible(true);
-        table.setLinesVisible(true);
-        // CodereviewViewerProvider provider = new CodereviewViewerProvider(this.fCodereviewLifeCycle);
-        // dependencyViewer.setContentProvider(provider);
+        return compositeMain;
+    }
 
-        return dependencyViewer.getTable();
+    @Override
+    public void setFocus() {
+        mainPageBook.setFocus();
+
+    }
+
+    private JobCodereviewViewer getCurrentViewer() {
+        return fAllViewers[fCurrentViewerIndex];
+    }
+
+    public void setCodereviewMode(int viewerIndex) {
+        Assert.isNotNull(fAllViewers);
+        if (viewerIndex < fAllViewers.length && fCurrentViewerIndex != viewerIndex) {
+            fCurrentViewerIndex = viewerIndex;
+
+            updateCodereviewViewer(true);
+            if (inputProcess != null) {
+                ISelection currSelection = getCurrentViewer().getSelection();
+                if (currSelection == null || currSelection.isEmpty()) {
+                    internalSelectType(inputProcess, false);
+                    currSelection = getCurrentViewer().getSelection();
+                }
+            }
+            updateTitle();
+
+            // fDialogSettings.put(DIALOGSTORE_HIERARCHYVIEW, viewerIndex);
+            getCurrentViewer().getTree().setFocus();
+        }
+        for (int i = 0; i < fViewActions.length; i++) {
+            CodereviewToggleViewAction action = fViewActions[i];
+            action.setChecked(fCurrentViewerIndex == action.getViewerIndex());
+        }
+    }
+
+    private void internalSelectType(IProcess2 process, boolean reveal) {
+        JobCodereviewViewer viewer = getCurrentViewer();
+    }
+
+    /*
+     * When the input changed or the codereview pane becomes visible, <code>updateCodereviewViewer<code> brings up the
+     * correct view and refreshes the current tree
+     */
+    private void updateCodereviewViewer(final boolean doExpand) {
+        if (inputProcess == null) {
+            headerLabel.setText(showEmptyLabel);
+            mainPageBook.showPage(headerLabel);
+        } else {
+            if (getCurrentViewer().containsElements() != null) {
+                Runnable runnable = new Runnable() {
+
+                    public void run() {
+                        getCurrentViewer().updateContent(doExpand); // refresh
+                        updateMethodViewer(inputProcess);
+                    }
+                };
+                BusyIndicator.showWhile(getDisplay(), runnable);
+                if (!isChildVisible(headerPageBook, getCurrentViewer().getControl())) {
+                    setViewerVisibility(true);
+                }
+            } else {
+                fEmptyTypesViewer.setText(Messages.getString("JobCodereviewViewPart.reason")); //$NON-NLS-1$
+                setViewerVisibility(false);
+            }
+        }
+    }
+
+    /*
+     * Toggles between the empty viewer page and the codereview
+     */
+    private void setViewerVisibility(boolean showCodereview) {
+        if (showCodereview) {
+            headerPageBook.showPage(getCurrentViewer().getControl());
+        } else {
+            headerPageBook.showPage(fEmptyTypesViewer);
+        }
+    }
+
+    public IProcess2 getInputProcess() {
+        return inputProcess;
+    }
+
+    public void setInputProcess(IProcess2 process) {
+        updateInput(process);
+    }
+
+    public int getCodereviewMode() {
+        return fCurrentViewerIndex;
+    }
+
+    private Display getDisplay() {
+        if (mainPageBook != null && !mainPageBook.isDisposed()) {
+            return mainPageBook.getDisplay();
+        }
+        return null;
+    }
+
+    private boolean isChildVisible(Composite pb, Control child) {
+        Control[] children = pb.getChildren();
+        for (int i = 0; i < children.length; i++) {
+            if (children[i] == child && children[i].isVisible())
+                return true;
+        }
+        return false;
+    }
+
+    /*
+     * Changes the input to a new type
+     *
+     * @param inputElement
+     */
+    private void updateInput(IProcess2 newProcess) {
+        IProcess2 prevInput = inputProcess;
+        if (newProcess == null) {
+            clearInput();
+        } else {
+            inputProcess = newProcess;
+            headerLabel.setText(Messages.getString("JobCodereviewMessages.JobCodereviewViewPart_createinput", getJobLabel()));
+            try {
+                fCodereviewLifeCycle.ensureRefreshedTypeCodereview(inputProcess, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+            } catch (InvocationTargetException e) {
+                org.talend.commons.ui.runtime.exception.ExceptionHandler.process(e);
+                clearInput();
+                return;
+            } catch (InterruptedException e) {
+                headerLabel.setText(showEmptyLabel);
+                return;
+            }
+
+            // internalSelectType(null, false); // clear selection
+            updateCodereviewViewer(true);
+            internalSelectType(inputProcess, true);
+            updateToolbarButtons();
+            updateTitle();
+            mainPageBook.showPage(mainSashForm);
+        }
+    }
+
+    private void clearInput() {
+        inputProcess = null;
+        fCodereviewLifeCycle.freeCodereview();
+
+        updateCodereviewViewer(false);
+        updateToolbarButtons();
+    }
+
+    private void updateToolbarButtons() {
+        // boolean isType = inputProcess instanceof IType;
+        // for (int i = 0; i < fViewActions.length; i++) {
+        // CodereviewToggleViewAction action = fViewActions[i];
+        // if (action.getViewerIndex() == HIERARCHY_MODE_CLASSIC) {
+        // action.setEnabled(fInputElement != null);
+        // } else {
+        // action.setEnabled(isType);
+        // }
+        // }
+    }
+
+    private void updateTitle() {
+        String viewerTitle = getCurrentViewer().getTitle();
+
+        String tooltip;
+        String title;
+        if (inputProcess != null) {
+            String[] args = new String[] { viewerTitle, getJobLabel(), getProjectLabel() };
+            title = Messages.getString("JobCodereviewMessages.JobCodereviewViewPart_title", args); //$NON-NLS-1$
+            tooltip = Messages.getString("JobCodereviewMessages.JobCodereviewViewPart_tooltip", args); //$NON-NLS-1$
+        } else {
+            title = ""; //$NON-NLS-1$
+            tooltip = viewerTitle;
+        }
+        setContentDescription(title);
+        setTitleToolTip(tooltip);
+    }
+
+    private String getJobLabel() {
+        return inputProcess.getLabel();
+    }
+
+    private String getProjectLabel() {
+        org.talend.core.model.properties.Project project = ProjectManager.getInstance().getProject(inputProcess.getProperty().getItem());
+        return project.getTechnicalLabel();
+    }
+
+    private void initDragAndDrop() {
+        for (int i = 0; i < fAllViewers.length; i++) {
+            addDropAdapters(fAllViewers[i]);
+        }
+
+        // DND on empty codereview
+        DropTarget dropTarget = new DropTarget(mainPageBook, DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK | DND.DROP_DEFAULT);
+        dropTarget.setTransfer(new Transfer[] { LocalSelectionTransfer.getTransfer() });
+        dropTarget.addDropListener(new JobCodereviewTransferDropAdapter(this));
+    }
+
+    private void addDropAdapters(AbstractTreeViewer viewer) {
+        Transfer[] transfers = new Transfer[] { LocalSelectionTransfer.getTransfer() };
+        int ops = DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK | DND.DROP_DEFAULT;
+        DelegatingDropAdapter delegatingDropAdapter = new DelegatingDropAdapter();
+        delegatingDropAdapter.addDropTargetListener(new JobCodereviewTransferDropAdapter(this));
+        viewer.addDropSupport(ops, transfers, delegatingDropAdapter);
+    }
+
+    protected void doSelectionChanged(SelectionChangedEvent e) {
+        if (e.getSelectionProvider() == this.dependencyViewer) {
+
+        } else {
+            jobSelectionChanged(e.getSelection());
+        }
+    }
+
+    private void jobSelectionChanged(ISelection sel) {
+        if (sel instanceof IStructuredSelection) {
+            Object object = ((IStructuredSelection) sel).getFirstElement();
+            if (object == null) {
+                return;
+            }
+            IProcess2 process = (IProcess2) object;
+            updateMethodViewer(process);
+        }
+    }
+
+    private void updateMethodViewer(final IProcess2 input) {
+        if (!CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_ETLTOOL_ENABLED)) {
+            bodyLabel.setText("No webhook defined !");
+            dependencyViewer.getTable().setVisible(false);
+            return;
+        }
+        dependencyViewer.getTable().setVisible(true);
+        
+        if (input == dependencyViewer.getInput()) {
+            if (input != null) {
+                Runnable runnable = new Runnable() {
+                    public void run() {
+                        dependencyViewer.refresh(); // refresh
+                    }
+                };
+                BusyIndicator.showWhile(getDisplay(), runnable);
+            }
+        } else {
+            if (input != null) {
+                ILabelProvider provider = (ILabelProvider) getCurrentViewer().getLabelProvider();
+                bodyLabel.setText(provider.getText(input));
+                bodyLabel.setImage(provider.getImage(input));
+                inputProcessSelected = input;
+                fillCodereviewItems(input);
+            } else {
+                bodyLabel.setText(""); //$NON-NLS-1$
+                bodyLabel.setImage(null);
+            }
+            /*
+            Runnable runnable = new Runnable() {
+
+                public void run() {
+                    dependencyViewer.setInput(input); // refresh
+                }
+            };
+            BusyIndicator.showWhile(getDisplay(), runnable);
+            */
+        }
+    }
+
+    public void setViewLayout(int layout) {
+        if (fCurrentLayout != layout || layout == VIEW_LAYOUT_AUTOMATIC) {
+            fInComputeLayout = true;
+            try {
+                boolean methodViewerNeedsUpdate = false;
+
+                if (
+                    this.bodyViewForm != null &&
+                    !bodyViewForm.isDisposed() &&
+                    mainSashForm != null &&
+                    !mainSashForm.isDisposed()
+                ) {
+                    boolean horizontal = false;
+                    if (layout == VIEW_LAYOUT_SINGLE) {
+                        bodyViewForm.setVisible(false);
+                        // showMembersInCodereview(false);
+                        updateMethodViewer(null);
+                    } else {
+                        if (fCurrentLayout == VIEW_LAYOUT_SINGLE) {
+                            bodyViewForm.setVisible(true);
+                            methodViewerNeedsUpdate = true;
+                        }
+                        if (layout == VIEW_LAYOUT_AUTOMATIC) {
+                            if (mainComposite != null && !mainComposite.isDisposed()) {
+                                Point size = mainComposite.getSize();
+                                if (size.x != 0 && size.y != 0) {
+                                    // bug 185397 - Codereview View flips orientation multiple times on resize
+                                    // Control viewFormToolbar = headerViewForm.getTopLeft();
+                                    // if (viewFormToolbar != null && !viewFormToolbar.isDisposed() &&
+                                    // viewFormToolbar.isVisible()) {
+                                    // size.y -= viewFormToolbar.getSize().y;
+                                    // }
+                                    horizontal = size.x > size.y;
+                                }
+                            }
+                            if (fCurrentLayout == VIEW_LAYOUT_AUTOMATIC) {
+                                boolean wasHorizontal = mainSashForm.getOrientation() == SWT.HORIZONTAL;
+                                if (wasHorizontal == horizontal) {
+                                    return; // no real change
+                                }
+                            }
+
+                        } else if (layout == VIEW_LAYOUT_HORIZONTAL) {
+                            horizontal = true;
+                        }
+                        mainSashForm.setOrientation(horizontal ? SWT.HORIZONTAL : SWT.VERTICAL);
+                    }
+                    // updateMainToolbar(horizontal);
+                    mainSashForm.layout();
+                }
+                if (methodViewerNeedsUpdate) {
+                    jobSelectionChanged(getCurrentViewer().getSelection());
+                }
+                fDialogSettings.put(DIALOGSTORE_VIEWLAYOUT, layout);
+                fCurrentLayout = layout;
+
+                updateCheckedState();
+            } finally {
+                fInComputeLayout = false;
+            }
+        }
+    }
+
+    private void addResizeListener(Composite parent) {
+        parent.addControlListener(new ControlListener() {
+
+            public void controlMoved(ControlEvent e) {
+            }
+
+            public void controlResized(ControlEvent e) {
+                if (getViewLayout() == VIEW_LAYOUT_AUTOMATIC && !fInComputeLayout) {
+                    setViewLayout(VIEW_LAYOUT_AUTOMATIC);
+                }
+            }
+        });
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.eclipse.jdt.ui.ITypeCodereviewViewPart#getViewLayout()
+     */
+    public int getViewLayout() {
+        return fCurrentLayout;
+    }
+
+    private void updateCheckedState() {
+        for (int i = 0; i < fToggleOrientationActions.length; i++) {
+            fToggleOrientationActions[i].setChecked(getViewLayout() == fToggleOrientationActions[i].getOrientation());
+        }
+    }
+
+    private void initializeTypesViewer(final JobCodereviewViewer typesViewer) {
+        // typesViewer.getControl().setVisible(false);
+        typesViewer.initContextMenu(new IMenuListener() {
+            public void menuAboutToShow(IMenuManager menu) {
+                fillJobViewerContextMenu(typesViewer, menu);
+            }
+        }, getSite());
+
+        typesViewer.addPostSelectionChangedListener(fSelectionChangedListener);
+    }
+
+    private void fillJobViewerContextMenu(JobCodereviewViewer viewer, IMenuManager menu) {
+        // viewer entries
+        // ISelection selection = viewer.getSelection();
+
+        // if (focusOnSelectionAction.canActionBeAdded())
+        // menu.appendToGroup(GROUP_FOCUS, focusOnSelectionAction);
+        // menu.appendToGroup(GROUP_FOCUS, fFocusOnTypeAction);
+
+        menu.add(focusOnTypeAction);
+
+        fActionGroups.setContext(new ActionContext(getSite().getSelectionProvider().getSelection()));
+        fActionGroups.fillContextMenu(menu);
+        fActionGroups.setContext(null);
+    }
+
+    /*
+     * Creates the context menu for the method viewer
+     */
+    private void fillDependencyViewerContextMenu(IMenuManager menu) {
+        // viewer entries
+        fActionGroups.setContext(new ActionContext(getSite().getSelectionProvider().getSelection()));
+        fActionGroups.fillContextMenu(menu);
+        fActionGroups.setContext(null);
+    }
+
+    private void fillCodereviewItems(IProcess2 input) {
+        if (dependencyButtons != null && !dependencyButtons.isEmpty()) {
+            // Empty codereview table view
+            for (Object object : dependencyButtons.keySet()) {
+                Button button = dependencyButtons.get(object);
+                button.setVisible(false);
+                button.dispose();
+            }
+            dependencyButtons.clear();
+
+            dependencyViewer.setContentProvider(ArrayContentProvider.getInstance());
+            dependencyViewer.setInput(null);
+            dependencyViewer.refresh();
+        }
+
+        // Get Codereview data
+        String jobName = input.getProperty().getItem().getProperty().getDisplayName();
+        org.talend.core.model.properties.Project project = ProjectManager.getInstance().getProject(input.getProperty().getItem());
+        String jobXmlLocation = 
+            ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString() +
+            File.separator +
+            project.getTechnicalLabel() +
+            File.separator +
+            "process" +
+            File.separator +
+            input.getProperty().getItem().getState().getPath().replaceFirst("Regex", "") +
+            File.separator +
+            jobName +
+            "_" + input.getVersion() + ".item";
+        String xmlText = "";
+        try {
+            File file = new File(jobXmlLocation);
+            Scanner sc = new Scanner(file);
+            sc.useDelimiter("\\Z");
+            xmlText = sc.next();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER.info("Get file error : " + jobXmlLocation);
+            }
+        }
+        codereviewItems = Webhook.codeReviewAnalyseText("Talend", jobName, xmlText);
+
+        // Fill codereview table view
+        dependencyViewer.setContentProvider(ArrayContentProvider.getInstance());
+        dependencyViewer.setInput(codereviewItems);
+        dependencyViewer.refresh();
     }
 
     public void dispose() {

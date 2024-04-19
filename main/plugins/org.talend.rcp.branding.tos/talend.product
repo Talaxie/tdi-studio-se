@@ -17,7 +17,7 @@
       <vmArgs>-Xms40m -Xmx500m -XX:MaxPermSize=128m</vmArgs>
    </launcherArgs>
 
-   <windowImages i16="/org.talend.rcp/icons/appli_16x16.gif" i32="/org.talend.rcp/icons/appli_32x32.gif" i48="/org.talend.rcp/icons/appli_48x48.gif"/>
+   <windowImages i16="/org.talend.rcp/icons/appli_16x16.png" i32="/org.talend.rcp/icons/appli_32x32.gif" i48="/org.talend.rcp/icons/appli_48x48.gif"/>
 
    <splash
       location="org.talend.rcp"

@@ -14,6 +14,7 @@ package org.talend.designer.core.ui.codereview;
 
 import java.util.List;
 
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.talend.core.model.process.IProcess2;
@@ -40,6 +41,7 @@ public class SubJobCodereviewViewer extends JobCodereviewViewer {
              expandToLevel(expandLevel);
         }
         getTree().setRedraw(true);
+        getTree().setBackground(new Color(236, 237, 239));
     }
 
     /**

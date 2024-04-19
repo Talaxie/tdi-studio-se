@@ -28,10 +28,13 @@ public class RepositoryPropertiesProvider extends AbstractSourceProvider {
 
     private static final String SHOW_LITE_UPDATESITE_PREF = "RepositoryPropertiesProvider.showLiteUpdatesitePref";//$NON-NLS-1$
 
+    private static final String SHOW_ETLTOOL_ACTION = "RepositoryPropertiesProvider.showEtlToolAction";//$NON-NLS-1$
+
     @Override
     public Map getCurrentState() {
         Map<String, Boolean> stateMap = new HashMap<String, Boolean>();
         stateMap.put(SHOW_LITE_UPDATESITE_PREF, showLiteUpdatesitePref());
+        stateMap.put(SHOW_ETLTOOL_ACTION, showEtlToolAction());
         return stateMap;
     }
 
@@ -40,6 +43,10 @@ public class RepositoryPropertiesProvider extends AbstractSourceProvider {
         boolean isPoweredbyTalend = IBrandingService.get().isPoweredbyTalend();
         boolean isStudioLite = PluginChecker.isStudioLite();
         return isTis && isStudioLite && isPoweredbyTalend;
+    }
+
+    private boolean showEtlToolAction() {
+        return false;
     }
 
     @Override

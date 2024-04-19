@@ -17,7 +17,6 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
@@ -35,7 +34,6 @@ public abstract class JobCodereviewViewer extends TreeViewer {
 
     public JobCodereviewViewer(Composite parent, IContentProvider contentProvider, JobCodereviewLifeCycle lifeCycle, IWorkbenchPart part) {
         super(new Tree(parent, SWT.SINGLE));
-        getTree().setBackground(new Color(250, 0, 250));
    
         fLabelProvider = new JobCodereviewLabelProvider(lifeCycle);
 
