@@ -38,7 +38,7 @@
 	<distributionManagement>
 		<snapshotRepository>
 			<id>talend_nexus_deployment</id>
-			<url>${talend.nexus.url}/nexus/content/repositories/TalendOpenSourceSnapshot/</url>
+			<url>${talend.nexus.url}/repository/talaxie/</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
@@ -48,7 +48,7 @@
 		</snapshotRepository>
 		<repository>
 			<id>talend_nexus_deployment</id>
-			<url>${talend.nexus.url}/nexus/content/repositories/TalendOpenSourceRelease/</url>
+			<url>${talend.nexus.url}/repository/talaxie/</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>

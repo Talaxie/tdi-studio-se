@@ -73,7 +73,7 @@
   <repositories>
     <repository>
       <id>talend_nexus</id>
-      <url>https://artifacts-oss.talend.com/nexus/content/repositories/talend-update/</url>
+      <url>https://nexus.deilink.fr/repository/talaxie/</url>
     </repository>
   </repositories>
 </project>
