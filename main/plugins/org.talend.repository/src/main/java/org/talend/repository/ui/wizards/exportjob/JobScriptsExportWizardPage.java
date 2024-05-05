@@ -193,6 +193,8 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
 
     String selectedJobVersion = "0.1"; //$NON-NLS-1$
 
+    String selectedNexusRepo = "Snapshot"; //$NON-NLS-1$
+
     private String originalRootFolderName;
 
     protected Button addBSButton;
@@ -625,6 +627,26 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
             webhookGD.horizontalSpan = 3;
             webhookButton.setLayoutData(webhookGD);
             webhookButton.setSelection(true);
+
+            if (CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_NEXUS_ENABLED)) {
+                final Combo nexusCombo = new Combo(optionsComposite, SWT.PUSH);
+                String[] nexusRepo = { "Snapshot", "Release" };
+                nexusCombo.setItems(nexusRepo);
+                nexusCombo.setText(selectedNexusRepo);
+                nexusCombo.addSelectionListener(new SelectionListener() {
+
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        selectedNexusRepo = nexusCombo.getText();
+                    }
+
+                    @Override
+                    public void widgetDefaultSelected(SelectionEvent e) {
+                        widgetSelected(e);
+                    }
+
+                });
+            }
         }
 
         updateOptionStates();
@@ -1574,7 +1596,7 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
             try {
                 String projectLabel = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
                 List<String> defaultFileName = getDefaultFileName();
-                HashMap<String, String> jobData = Webhook.export(manager.getDestinationPath(), projectLabel, defaultFileName.get(0), selectedJobVersion);
+                HashMap<String, String> jobData = Webhook.export(manager.getDestinationPath(), projectLabel, defaultFileName.get(0), selectedJobVersion, selectedNexusRepo);
 
                 if (CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_ETLTOOL_ENABLED)) {
                     String message = "Voulez-vous ouvrir le job sur EtlTool ?\n"; //$NON-NLS-1$
