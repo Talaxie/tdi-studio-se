@@ -81,7 +81,10 @@ public class ServerRest {
             response += "import ok!";
           } else if (queryParams.get("action").equals("export")) {
             try {
-              // ServerUtil.importZipFile("C:/Temp/ETL01_000_JobEtl_Master.zip", "ETL01_000_JobEtl_Master");
+              String project = queryParams.get("project");
+              String master = queryParams.get("master");
+              String fileLocation = queryParams.get("fileLocation");
+              ServerUtil.jobExport(fileLocation, project, master);
             } catch (Exception e) {
               e.printStackTrace();
               if (LOGGER.isInfoEnabled()) {
@@ -91,6 +94,20 @@ public class ServerRest {
               response = "Error export!";
             }
             response += "export ok!";
+          } else if (queryParams.get("action").equals("scriptStart")) {
+            try {
+              String scriptLocation = queryParams.get("scriptLocation");
+              String arg = queryParams.get("arg");
+              ServerUtil.scriptStart(scriptLocation, arg);
+            } catch (Exception e) {
+              e.printStackTrace();
+              if (LOGGER.isInfoEnabled()) {
+                LOGGER.info("Error - ServerRest scriptStart");
+                LOGGER.info(e);
+              }
+              response = "Error scriptStart!";
+            }
+            response += "scriptStart ok!";
           } else {
             response += "unknow action!";
           }

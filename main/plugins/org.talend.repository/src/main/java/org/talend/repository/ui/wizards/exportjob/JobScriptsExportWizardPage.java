@@ -1663,10 +1663,18 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
                 destinationStr = userDir + File.separator + destinationStr;
             }
             exportChoiceMap.put(ExportChoice.addStatistics, Boolean.TRUE);
-            System.out.print("destinationStr : " + destinationStr);
 
-            return BuildJobManager.getInstance().buildJobs(destinationStr, checkedNodes, getDefaultFileName(),
-                    getSelectedJobVersion(), context.toString(), exportChoiceMap, jobExportType, monitor);
+			if (LOGGER.isInfoEnabled()) {
+				LOGGER.info("-- buildJobs");
+				LOGGER.info(destinationStr);
+				LOGGER.info(checkedNodes);
+				LOGGER.info(getDefaultFileName());
+				LOGGER.info(getSelectedJobVersion());
+				LOGGER.info(context.toString());
+				LOGGER.info(exportChoiceMap);
+				LOGGER.info(jobExportType);
+			}
+            return BuildJobManager.getInstance().buildJobs(destinationStr, checkedNodes, getDefaultFileName(), getSelectedJobVersion(), context.toString(), exportChoiceMap, jobExportType, monitor);
 
         } catch (Exception e) {
             Display.getDefault().asyncExec(new Runnable() {
