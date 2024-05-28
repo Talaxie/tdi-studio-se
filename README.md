@@ -55,6 +55,6 @@ See the [CONTRIBUTORS.md](./CONTRIBUTORS.md) file for details.
 
 ## License
 
-Copyright (c) 2006-2024 Talaxie
+Copyright (c) 2023-2024 Talaxie
 
 Licensed under the Apache V2 License
