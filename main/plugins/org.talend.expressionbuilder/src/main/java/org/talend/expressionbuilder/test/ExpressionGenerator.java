@@ -1,12 +1,12 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talaxie Inc. - www.deilink.fr
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
 //
 // You should have received a copy of the agreement
-// along with this program; if not, write to Talend SA
+// along with this program; if not, write to Talaxie SA
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
@@ -39,11 +39,11 @@ public class ExpressionGenerator {
             + NL
             + "//" //$NON-NLS-1$
             + NL
-            + "// Talend Community Edition" //$NON-NLS-1$
+            + "// Talaxie Community Edition" //$NON-NLS-1$
             + NL
             + "//" //$NON-NLS-1$
             + NL
-            + "// Copyright (C) 2006-2021 Talend Inc. - www.talend.com" //$NON-NLS-1$
+            + "// Copyright (C) 2006-2021 Talaxie Inc. - www.deilink.fr" //$NON-NLS-1$
             + NL
             + "//" //$NON-NLS-1$
             + NL

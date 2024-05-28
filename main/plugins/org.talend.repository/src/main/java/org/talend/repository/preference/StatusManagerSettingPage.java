@@ -1,12 +1,12 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talaxie Inc. - www.deilink.fr
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
 //
 // You should have received a copy of the agreement
-// along with this program; if not, write to Talend SA
+// along with this program; if not, write to Talaxie SA
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
@@ -728,7 +728,7 @@ public class StatusManagerSettingPage extends ProjectSettingPage {
             ERepositoryObjectType type = object.getRepositoryNode().getContentType();
             if (!objectType.equals(ERepositoryObjectType.JOB_DOC) && !objectType.equals(ERepositoryObjectType.JOBLET_DOC)) {
                 if (isTechinalStatus()) {
-                    // Modified by Marvin Wang on Jan.7, 2011 for bug Talend DI TDI-19154, should not use
+                    // Modified by Marvin Wang on Jan.7, 2011 for bug Talaxie DI TDI-19154, should not use
                     // obj.equals(constant) that will cause NPE.
                     if (!type.equals(ERepositoryObjectType.DOCUMENTATION)
                             && !type.equals(ERepositoryObjectType.JOBLET_DOC)) {

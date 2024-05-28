@@ -4,7 +4,7 @@
     VERSION="2.1" 
     STATUS="ALPHA" 
     COMPATIBILITY="WIN32" 
-    AUTHOR="Talend" 
+    AUTHOR="Talaxie" 
     RELEASE_DATE="20070703A" 
     STARTABLE="false" 
     EXTENSION="org.talend.designer.mapper" 

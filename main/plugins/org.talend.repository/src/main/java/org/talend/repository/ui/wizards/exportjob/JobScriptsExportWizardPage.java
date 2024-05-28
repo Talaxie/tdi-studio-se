@@ -1,12 +1,12 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talaxie Inc. - www.deilink.fr
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
 //
 // You should have received a copy of the agreement
-// along with this program; if not, write to Talend SA
+// along with this program; if not, write to Talaxie SA
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
@@ -15,6 +15,7 @@ package org.talend.repository.ui.wizards.exportjob;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,7 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -89,11 +90,14 @@ import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.IRepositoryPrefConstants;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.utils.JavaResourcesHelper;
+import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.context.nattableTree.ContextNatTableUtils;
+import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.export.ArchiveFileExportOperationFullPath;
 import org.talend.core.ui.export.FileSystemExporterFullPath;
+import org.talend.core.ui.webService.Webhook;
 import org.talend.core.views.IComponentSettingsView;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
@@ -114,6 +118,8 @@ import org.talend.repository.ui.wizards.exportjob.util.ExportJobUtil;
 import org.talend.repository.utils.EmfModelUtils;
 import org.talend.repository.utils.JobVersionUtils;
 
+import org.eclipse.core.runtime.Status;
+
 /**
  * Page of the Job Scripts Export Wizard. <br/>
  *
@@ -121,6 +127,8 @@ import org.talend.repository.utils.JobVersionUtils;
  *
  */
 public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourceExportPage1 {
+
+    private static final Logger LOGGER = Logger.getLogger(JobScriptsExportWizardPage.class);
 
     protected static final String DESTINATION_FILE = "destinationFile";//$NON-NLS-1$
 
@@ -150,6 +158,8 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
     protected Button exportMSAsZipButton;
 
     protected Button jobScriptButton;
+
+    protected Button webhookButton;
 
     protected Button log4jButton;
 
@@ -182,6 +192,8 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
     protected Button chkButton;
 
     String selectedJobVersion = "0.1"; //$NON-NLS-1$
+
+    String selectedNexusRepo = "Snapshot"; //$NON-NLS-1$
 
     private String originalRootFolderName;
 
@@ -603,6 +615,40 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
         jobScriptGD.horizontalSpan = 3;
         jobScriptButton.setLayoutData(jobScriptGD);
 
+        if (
+            CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_NEXUS_ENABLED) ||
+            CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_ETLTOOL_ENABLED) ||
+            CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_SCRIPT_ENABLED)
+        ) {
+            webhookButton = new Button(optionsComposite, SWT.CHECK | SWT.LEFT);
+            webhookButton.setText("Webhook"); //$NON-NLS-1$
+            webhookButton.setFont(font);
+            GridData webhookGD = new GridData();
+            webhookGD.horizontalSpan = 3;
+            webhookButton.setLayoutData(webhookGD);
+            webhookButton.setSelection(true);
+
+            if (CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_NEXUS_ENABLED)) {
+                final Combo nexusCombo = new Combo(optionsComposite, SWT.PUSH);
+                String[] nexusRepo = { "Snapshot", "Release" };
+                nexusCombo.setItems(nexusRepo);
+                nexusCombo.setText(selectedNexusRepo);
+                nexusCombo.addSelectionListener(new SelectionListener() {
+
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        selectedNexusRepo = nexusCombo.getText();
+                    }
+
+                    @Override
+                    public void widgetDefaultSelected(SelectionEvent e) {
+                        widgetSelected(e);
+                    }
+
+                });
+            }
+        }
+
         updateOptionStates();
     }
 
@@ -759,6 +805,10 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
         } else {
             return jobScriptButton == null ? false : jobScriptButton.getSelection();
         }
+    }
+
+    protected boolean isAddWebhook() {
+        return webhookButton == null ? false : webhookButton.getSelection();
     }
 
     protected boolean isNeedLog4jLevel() {
@@ -1404,6 +1454,7 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
      */
     @Override
     public boolean finish() {
+
         IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         IComponentSettingsView compSettings = (IComponentSettingsView) page.findView(IComponentSettingsView.ID);
         if (compSettings != null) {
@@ -1427,6 +1478,34 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
         if (JobExportType.POJO.equals(jobExportType) || JobExportType.MSESB.equals(jobExportType)
                 || JobExportType.OSGI.equals(jobExportType) || JobExportType.IMAGE.equals(jobExportType)
                 || JobExportType.MSESB_IMAGE.equals(jobExportType)) {
+                    
+            // TODO Jean Cazaux
+            /*
+            String message = "Info export job #1\n"; //$NON-NLS-1$
+            // message += "getCheckNodes: " + Arrays.asList(getCheckNodes()) + "\n";
+            message += "selectedJobVersion: " + selectedJobVersion + "\n";
+            // message += "manager: " + manager + "\n";
+            message += "Context: " + processItem.getProcess().getDefaultContext() + "\n";
+            message += "originalRootFolderName: " + originalRootFolderName + "\n";
+            message += "getProcessType: " + getProcessType() + "\n";
+            message += "jobExportType: " + jobExportType + "\n";
+            MessageDialog messageDialog = new MessageDialog(
+                DisplayUtils.getDefaultShell(false),
+                "Talaxie - export de la build vers EtlTool", //$NON-NLS-1$
+                null,
+                message, //$NON-NLS-1$
+                MessageDialog.CONFIRM,
+                new String[] {
+                    IDialogConstants.OK_LABEL,
+                    IDialogConstants.CANCEL_LABEL
+                },
+                0
+            ); //$NON-NLS-1$
+            if (messageDialog.open() == 0) {
+                // TODO
+            }
+            */
+
             IRunnableWithProgress worker = new IRunnableWithProgress() {
 
                 @Override
@@ -1512,6 +1591,44 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
             treeViewer.dispose();
         }
 
+        // Export to EtlTool
+        if (isAddWebhook()) {
+            try {
+                String projectLabel = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+                List<String> defaultFileName = getDefaultFileName();
+                HashMap<String, String> jobData = Webhook.export(manager.getDestinationPath(), projectLabel, defaultFileName.get(0), selectedJobVersion, selectedNexusRepo);
+
+                if (CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_ETLTOOL_ENABLED)) {
+                    String message = "Voulez-vous ouvrir le job sur EtlTool ?\n"; //$NON-NLS-1$
+                    message += "Projet: " + jobData.get("Projet") + "\n";
+                    message += "Sequenceur: " + jobData.get("Sequenceur") + "\n";
+                    message += "Version: " + jobData.get("JobVersion") + "\n";
+                    MessageDialog messageDialog = new MessageDialog(
+                        DisplayUtils.getDefaultShell(false),
+                        "Talaxie - export de la build vers EtlTool", //$NON-NLS-1$
+                        null,
+                        message, //$NON-NLS-1$
+                        MessageDialog.CONFIRM,
+                        new String[] {
+                            IDialogConstants.OK_LABEL,
+                            IDialogConstants.CANCEL_LABEL
+                        },
+                        0
+                    ); //$NON-NLS-1$
+                    if (messageDialog.open() == 0) {
+                        URL jobURL = new URL(Webhook.getJobUrl(jobData));
+                        PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser().openURL(jobURL);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                if (LOGGER.isInfoEnabled()) {
+                    LOGGER.info("Webhook");
+                    LOGGER.info(e);
+                }
+            }
+        }
+
         // end
         return true;
     }
@@ -1546,8 +1663,18 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
                 destinationStr = userDir + File.separator + destinationStr;
             }
             exportChoiceMap.put(ExportChoice.addStatistics, Boolean.TRUE);
-            return BuildJobManager.getInstance().buildJobs(destinationStr, checkedNodes, getDefaultFileName(),
-                    getSelectedJobVersion(), context.toString(), exportChoiceMap, jobExportType, monitor);
+
+			if (LOGGER.isInfoEnabled()) {
+				LOGGER.info("-- buildJobs");
+				LOGGER.info(destinationStr);
+				LOGGER.info(checkedNodes);
+				LOGGER.info(getDefaultFileName());
+				LOGGER.info(getSelectedJobVersion());
+				LOGGER.info(context.toString());
+				LOGGER.info(exportChoiceMap);
+				LOGGER.info(jobExportType);
+			}
+            return BuildJobManager.getInstance().buildJobs(destinationStr, checkedNodes, getDefaultFileName(), getSelectedJobVersion(), context.toString(), exportChoiceMap, jobExportType, monitor);
 
         } catch (Exception e) {
             Display.getDefault().asyncExec(new Runnable() {
@@ -1621,6 +1748,7 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
         exportChoiceMap.put(ExportChoice.needJobScript, Boolean.TRUE);
         exportChoiceMap.put(ExportChoice.needContext, isNeedConext());
         exportChoiceMap.put(ExportChoice.contextName, getContextName());
+        exportChoiceMap.put(ExportChoice.needWebhook, isAddWebhook());
         if (applyToChildrenButton != null) {
             exportChoiceMap.put(ExportChoice.applyToChildren, applyToChildrenButton.getSelection());
         }

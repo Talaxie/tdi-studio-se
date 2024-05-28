@@ -32,6 +32,6 @@ Export-Package: org.talend.expressionbuilder,
  org.talend.expressionbuilder.test.shadow,
  org.talend.expressionbuilder.ui,
  org.talend.expressionbuilder.ui.proposal
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Import-Package: org.apache.xml.serializer.dom3
 Automatic-Module-Name: org.talend.expressionbuilder

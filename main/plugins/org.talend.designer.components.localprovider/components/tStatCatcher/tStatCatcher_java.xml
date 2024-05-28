@@ -6,7 +6,7 @@
     STATUS="BETA"
     
     COMPATIBILITY="ALL"
-    AUTHOR="Talend"
+    AUTHOR="Talaxie"
     RELEASE_DATE="20061215A"
     STARTABLE="true"
     LOG4J_ENABLED="true"

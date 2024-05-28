@@ -1,7 +1,7 @@
 <COMPONENT>
 
 	<HEADER PLATEFORM="ALL" SERIAL="" VERSION="0.102" STATUS="ALPHA"
-		COMPATIBILITY="ALL" AUTHOR="Talend" RELEASE_DATE="20070326A"
+		COMPATIBILITY="ALL" AUTHOR="Talaxie" RELEASE_DATE="20070326A"
 		STARTABLE="true" LOG4J_ENABLED="true">
 		<SIGNATURE />
 	</HEADER>
@@ -104,7 +104,7 @@
 		  GROUP="DATASOURCE"
 		  SHOW_IF="USE_EXISTING_CONNECTION=='false'"
 	    >
-	    	<DEFAULT>This option only applies when deploying and running in the Talend Runtime</DEFAULT>
+	    	<DEFAULT>This option only applies when deploying and running in the Talaxie Runtime</DEFAULT>
 	    </PARAMETER>
 	    
 		<PARAMETER

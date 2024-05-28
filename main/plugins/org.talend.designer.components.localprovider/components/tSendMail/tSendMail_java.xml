@@ -6,7 +6,7 @@
       VERSION="0.101"
        STATUS="ALPHA"
     COMPATIBILITY="ALL"
-       AUTHOR="Talend"
+       AUTHOR="Talaxie"
     RELEASE_DATE="20050320A"
     STARTABLE="true"
     PARTITIONING="AUTO"
@@ -59,7 +59,7 @@
     </PARAMETER>
 
     <PARAMETER NAME="SUBJECT" FIELD="TEXT" REQUIRED="true" NUM_ROW="70">
-      <DEFAULT>"Talend Open Studio notification"</DEFAULT>
+      <DEFAULT>"Talaxie Open Studio notification"</DEFAULT>
     </PARAMETER>
 
     <PARAMETER NAME="MESSAGE" FIELD="MEMO_MESSAGE" REQUIRED="false" NUM_ROW="80">

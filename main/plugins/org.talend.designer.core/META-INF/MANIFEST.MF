@@ -266,7 +266,7 @@ Export-Package: org.talend.designer.core;
  org.talend.designer.core.utils,
  org.talend.designer.unifiedcomponent.delegate.service,
  org.talend.designer.unifiedcomponent.unifier
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Service-Component: OSGI-INF/core.xml
 Eclipse-ExtensibleAPI: true
 Import-Package: org.apache.axis.utils,

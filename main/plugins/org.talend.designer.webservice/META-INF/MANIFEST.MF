@@ -38,5 +38,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
  lib/talend-ws-1.0.jar,
  lib/XmlSchema-1.4.5.jar
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Automatic-Module-Name: org.talend.designer.webservice

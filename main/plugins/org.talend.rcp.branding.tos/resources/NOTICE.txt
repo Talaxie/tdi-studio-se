@@ -1,5 +1,5 @@
-Talend Open Studio for Data Integration
-Copyright (c) 2006-2021 Talend Inc. - www.talend.com
+Talaxie Open Studio for Data Integration
+Copyright (c) 2006-2021 Talaxie Inc. - www.deilink.fr
 All rights reserved.
 
 
@@ -8,7 +8,7 @@ under the terms of the Apache License, Version 2.0
 
 
 This product includes software developed at
-Talend Inc. (http://www.talend.com).
+Talaxie Inc. (http://www.deilink.fr).
 
 
 This product includes software developed at

@@ -28,11 +28,11 @@
   <distributionManagement>
     <snapshotRepository>
       <id>talend_nexus_deployment</id>
-      <url>${talend.nexus.url}/nexus/content/repositories/TalendOpenSourceSnapshot/</url>
+      <url>${talend.nexus.url}/repository/talaxie/</url>
     </snapshotRepository>
     <repository>
       <id>talend_nexus_deployment</id>
-      <url>${talend.nexus.url}/nexus/content/repositories/TalendOpenSourceRelease/</url>
+      <url>${talend.nexus.url}/repository/talaxie/</url>
     </repository>
   </distributionManagement>
 
@@ -82,7 +82,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Implementation-Vendor>Talend SA</Implementation-Vendor>
+              <Implementation-Vendor>Talaxie SA</Implementation-Vendor>
               <Implementation-Title>${project.artifactId}</Implementation-Title>
               <Implementation-Version>1.0</Implementation-Version>
               <Built-By>${user.name}</Built-By>

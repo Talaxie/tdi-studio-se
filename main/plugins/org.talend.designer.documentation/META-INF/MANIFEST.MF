@@ -32,5 +32,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.talend.utils,
  org.eclipse.emf.ecore
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Automatic-Module-Name: org.talend.designer.documentation

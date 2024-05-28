@@ -6,7 +6,7 @@
     STATUS="ALPHA"
     COMPATIBILITY="ALL"
     EXTENSION="org.talend.designer.mapper" 
-    AUTHOR="Talend"
+    AUTHOR="Talaxie"
     RELEASE_DATE="20050320A"
     STARTABLE="false"
     SCHEMA_AUTO_PROPAGATE="false"

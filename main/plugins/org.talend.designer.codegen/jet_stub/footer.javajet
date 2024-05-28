@@ -621,9 +621,9 @@
 			java.util.Properties p_<%=jobCatcherNode.getUniqueName()%> = new java.util.Properties();
 			p_<%=jobCatcherNode.getUniqueName()%>.setProperty("root.logger", "runtime");
 			p_<%=jobCatcherNode.getUniqueName()%>.setProperty("encoding", "UTF-8");
-			p_<%=jobCatcherNode.getUniqueName()%>.setProperty("application.name", "Talend Studio");
-			p_<%=jobCatcherNode.getUniqueName()%>.setProperty("service.name", "Talend Studio Job");
-			p_<%=jobCatcherNode.getUniqueName()%>.setProperty("instance.name", "Talend Studio Job Instance");
+			p_<%=jobCatcherNode.getUniqueName()%>.setProperty("application.name", "Talaxie Studio");
+			p_<%=jobCatcherNode.getUniqueName()%>.setProperty("service.name", "Talaxie Studio Job");
+			p_<%=jobCatcherNode.getUniqueName()%>.setProperty("instance.name", "Talaxie Studio Job Instance");
 			p_<%=jobCatcherNode.getUniqueName()%>.setProperty("propagate.appender.exceptions", "none");
 			p_<%=jobCatcherNode.getUniqueName()%>.setProperty("log.appender", "file");
 			p_<%=jobCatcherNode.getUniqueName()%>.setProperty("appender.file.path", "runtime.json");
@@ -675,9 +675,9 @@
 				java.util.Properties properties_<%=jobCatcherNode.getUniqueName()%> = new java.util.Properties();
 				properties_<%=jobCatcherNode.getUniqueName()%>.setProperty("root.logger", "audit");
 				properties_<%=jobCatcherNode.getUniqueName()%>.setProperty("encoding", "UTF-8");
-				properties_<%=jobCatcherNode.getUniqueName()%>.setProperty("application.name", "Talend Studio");
-				properties_<%=jobCatcherNode.getUniqueName()%>.setProperty("service.name", "Talend Studio Job");
-				properties_<%=jobCatcherNode.getUniqueName()%>.setProperty("instance.name", "Talend Studio Job Instance");
+				properties_<%=jobCatcherNode.getUniqueName()%>.setProperty("application.name", "Talaxie Studio");
+				properties_<%=jobCatcherNode.getUniqueName()%>.setProperty("service.name", "Talaxie Studio Job");
+				properties_<%=jobCatcherNode.getUniqueName()%>.setProperty("instance.name", "Talaxie Studio Job Instance");
 				properties_<%=jobCatcherNode.getUniqueName()%>.setProperty("propagate.appender.exceptions", "none");
 				properties_<%=jobCatcherNode.getUniqueName()%>.setProperty("log.appender", "file");
 				properties_<%=jobCatcherNode.getUniqueName()%>.setProperty("appender.file.path", <%=location%>);

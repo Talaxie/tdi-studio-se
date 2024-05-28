@@ -1,12 +1,12 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talaxie Inc. - www.deilink.fr
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
 //
 // You should have received a copy of the agreement
-// along with this program; if not, write to Talend SA
+// along with this program; if not, write to Talaxie SA
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
@@ -43,6 +43,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.talend.commons.ui.gmf.util.ColorPalettePopup;
 import org.talend.commons.ui.gmf.util.FontHelper;
@@ -109,12 +110,29 @@ public class BasicNotePropertyComposite extends AbstractNotePropertyComposite {
      */
     @Override
     public void createControl(Composite parent) {
+        FormData data = new FormData();
+        data.top = new FormAttachment(0, 0);
+        data.left = new FormAttachment(0, 0);
+        data.bottom = new FormAttachment(100, 0);
+        data.right = new FormAttachment(100, 0);
+        parent.getParent().setLayoutData(data);
+        data = new FormData();
+        data.top = new FormAttachment(0, 0);
+        data.left = new FormAttachment(0, 0);
+        data.bottom = new FormAttachment(100, 0);
+        data.right = new FormAttachment(100, 0);
+        parent.setLayoutData(data);
         composite = getWidgetFactory().createFlatFormComposite(parent);
         if (composite.getLayout() instanceof FormLayout) {
             FormLayout formLayout = (FormLayout) composite.getLayout();
             formLayout.spacing = 0;
         }
-        FormData data;
+        data = new FormData();
+        data.top = new FormAttachment(0, 0);
+        data.left = new FormAttachment(0, 0);
+        data.bottom = new FormAttachment(100, 0);
+        data.right = new FormAttachment(100, 0);
+        composite.setLayoutData(data);
 
         check = getWidgetFactory().createButton(composite, "", SWT.CHECK); //$NON-NLS-1$
         data = new FormData();
@@ -152,22 +170,20 @@ public class BasicNotePropertyComposite extends AbstractNotePropertyComposite {
      * DOC qwei Comment method "createTextcontrol".
      */
     private void createTextControl(Composite parent) {
-        CLabel textLabel = getWidgetFactory().createCLabel(composite, Messages.getString("TextNoteSection.Label")); //$NON-NLS-1$
-        //$NON-NLS-1$
+        CLabel textLabel = getWidgetFactory().createCLabel(parent, Messages.getString("TextNoteSection.Label")); //$NON-NLS-1$
         FormData data = new FormData();
         data.left = new FormAttachment(0, 0);
-        data.top = new FormAttachment(colorsAndFontsGroup, 30);
+        data.top = new FormAttachment(colorsAndFontsGroup, 0);
         textLabel.setLayoutData(data);
-        text = getWidgetFactory().createText(composite, "", SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL); //$NON-NLS-1$
-        //$NON-NLS-1$
+
+        text = getWidgetFactory().createText(parent, "", SWT.NONE | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL); //$NON-NLS-1$
         data = new FormData();
-        data.left = new FormAttachment(0, STANDARD_LABEL_WIDTH);
-        data.right = new FormAttachment(textLabel, 560);
-        data.top = new FormAttachment(textLabel, 0, SWT.TOP);
-        data.height = 5 * text.getLineHeight(); // 5 lines
+        data.top = new FormAttachment(textLabel, 0, SWT.BOTTOM);
+        data.left = new FormAttachment(0, 0);
+        data.right = new FormAttachment(100, 0);
+        data.bottom = new FormAttachment(100, 0);
         text.setLayoutData(data);
-        text.setForeground(new Color(null, ColorUtils.stringToRGB((String) note.getPropertyValue(EParameterName.NOTETXT_COLOR
-                .getName()))));
+        text.setForeground(new Color(null, ColorUtils.stringToRGB((String) note.getPropertyValue(EParameterName.NOTETXT_COLOR.getName()))));
         text.setText(note.getText());
 
         text.addFocusListener(new FocusAdapter() {

@@ -1,4 +1,4 @@
-= Talend component for Neo4j
+= Talaxie component for Neo4j
 Benoit Simard <github@bsimard.com>
 V1.0
 :experimental:

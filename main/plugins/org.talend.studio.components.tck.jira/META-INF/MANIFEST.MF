@@ -11,4 +11,4 @@ Import-Package: org.eclipse.core.runtime,
  org.slf4j
 Bundle-ClassPath: .
 Eclipse-BundleShape: dir
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.

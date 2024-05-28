@@ -70,7 +70,7 @@
 				<!-- JDK version -->
 				<attribute name="Created-By" value="${java.version} (${java.vendor})" />
 				<!-- Information about the program itself -->
-				<attribute name="Implementation-Vendor" value="Talend SA" />
+				<attribute name="Implementation-Vendor" value="Talaxie SA" />
 				<attribute name="Implementation-Title" value="${jar.name}" />
 				<attribute name="Implementation-Version" value="1.0" />
 			</manifest>

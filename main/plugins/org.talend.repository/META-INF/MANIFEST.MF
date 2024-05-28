@@ -6,7 +6,7 @@ Bundle-SymbolicName: org.talend.repository;singleton:=true
 Bundle-Version: 8.8.8.qualifier
 Bundle-Localization: plugin
 Eclipse-LazyStart: true
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Require-Bundle: org.apache.commons.collections,
  org.apache.commons.io,
  org.apache.commons.logging,

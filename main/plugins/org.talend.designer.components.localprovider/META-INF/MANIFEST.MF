@@ -20,7 +20,7 @@ Require-Bundle: org.apache.commons.collections,
  org.talend.commons.runtime,
  org.talend.core.runtime
 Eclipse-LazyStart: true
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Bundle-ClassPath: .
 Export-Package: org.talend.designer.components.lookup.common
 Eclipse-BundleShape: dir

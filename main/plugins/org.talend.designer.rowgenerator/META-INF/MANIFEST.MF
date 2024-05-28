@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: RowGenerator Component Plug-in
 Bundle-SymbolicName: org.talend.designer.rowgenerator;singleton:=true
 Bundle-Version: 8.8.8.qualifier
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Eclipse-LazyStart: true
 Export-Package: org.talend.designer.rowgenerator,
  org.talend.designer.rowgenerator.data,

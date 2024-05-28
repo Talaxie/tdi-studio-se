@@ -4,7 +4,7 @@ Bundle-Name: TOS branding plug-in
 Bundle-SymbolicName: org.talend.rcp.branding.tos;singleton:=true
 Bundle-Version: 8.8.8.qualifier
 Bundle-Activator: org.talend.rcp.branding.tos.Activator
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

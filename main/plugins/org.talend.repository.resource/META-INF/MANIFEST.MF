@@ -4,7 +4,7 @@ Bundle-Name: Resource
 Bundle-SymbolicName: org.talend.repository.resource;singleton:=true
 Bundle-Version: 8.8.8.qualifier
 Bundle-Activator: org.talend.repository.resource.RouteResourceActivator
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Require-Bundle: org.eclipse.jface.text,
  org.eclipse.ui.editors,
  org.eclipse.ui.ide,

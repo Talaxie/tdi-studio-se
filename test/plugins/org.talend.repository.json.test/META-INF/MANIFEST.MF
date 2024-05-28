@@ -5,6 +5,6 @@ Bundle-SymbolicName: org.talend.repository.json.test
 Bundle-Version: 8.8.8.qualifier
 Fragment-Host: org.talend.repository.json
 Automatic-Module-Name: org.talend.repository.json.test
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Require-Bundle: org.junit,
  org.talend.testutils

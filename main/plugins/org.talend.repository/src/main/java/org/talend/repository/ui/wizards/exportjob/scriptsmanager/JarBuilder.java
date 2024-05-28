@@ -1,12 +1,12 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talaxie Inc. - www.deilink.fr
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
 //
 // You should have received a copy of the agreement
-// along with this program; if not, write to Talend SA
+// along with this program; if not, write to Talaxie SA
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
@@ -160,7 +160,7 @@ public class JarBuilder {
         Manifest manifest = new Manifest();
         Attributes a = new Attributes();
         a.put(Attributes.Name.IMPLEMENTATION_VERSION, "1.0"); //$NON-NLS-1$
-        a.put(Attributes.Name.IMPLEMENTATION_VENDOR, "Talend Open Studio"); //$NON-NLS-1$
+        a.put(Attributes.Name.IMPLEMENTATION_VENDOR, "Talaxie Open Studio"); //$NON-NLS-1$
         manifest.getEntries().put(jarFile.getName(), a);
         return manifest;
     }

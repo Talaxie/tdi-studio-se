@@ -6,7 +6,7 @@
     STATUS="PROD"
     
     COMPATIBILITY="ALL"
-    AUTHOR="Talend"
+    AUTHOR="Talaxie"
     RELEASE_DATE="20151112A"
     STARTABLE="false"
     DATA_AUTO_PROPAGATE="false"

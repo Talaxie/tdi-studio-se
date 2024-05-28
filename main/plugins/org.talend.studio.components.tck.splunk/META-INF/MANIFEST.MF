@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.talend.studio.components.tck.splunk;singleton:=true
 Bundle-Version: 8.8.8.qualifier
 Automatic-Module-Name: org.talend.studio.components.tck.splunk
 Bundle-ActivationPolicy: lazy
-Bundle-Vendor: .Talend SA.
+Bundle-Vendor: .Talaxie SA.
 Require-Bundle: org.talend.sdk.component.studio-integration,
  org.talend.core
 Import-Package: org.eclipse.core.runtime,

@@ -3,7 +3,7 @@
 <plugin>
 	<extension point="org.talend.core.component_installer_task">
 		<componentInstallerTask class="org.talend.studio.components.tck.jdbc.JDBCInstaller" order="1">
-			<componentGAV g="@@COMP_GROUP@@" a="@@COMP_ARTIFACT@@" v="@@COMP_VERSION@@" c="" t="" ct="2" />
+			<componentGAV g="org.talend.components" a="newjdbc" v="1.53.0-SNAPSHOT" c="" t="" ct="2" />
 		</componentInstallerTask>
 	</extension>
 	<extension point="org.talend.core.repositoryContextualsActions">

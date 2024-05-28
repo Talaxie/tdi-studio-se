@@ -1,12 +1,12 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talaxie Inc. - www.deilink.fr
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
 //
 // You should have received a copy of the agreement
-// along with this program; if not, write to Talend SA
+// along with this program; if not, write to Talaxie SA
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
@@ -331,7 +331,7 @@ public abstract class AbstractTalendEditor extends GraphicalEditorWithFlyoutPale
      */
     private static void handleReflectionFailure(Exception e) {
         // our hook is not working so say it
-        log.error("Talend Editor hook failed", e);
+        log.error("Talaxie Editor hook failed", e);
         throw new RuntimeException(e);
 
     }
