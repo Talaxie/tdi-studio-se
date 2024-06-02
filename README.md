@@ -7,7 +7,7 @@ http://www.deilink.fr
 
 > Contents
 
-This repository contains the source files for Talaxie Open Studio for Data Integration. These files must be used together with the common code contained in [tcommon-studio-se](https://github.com/JeanCazaux/tcommon-studio-se).
+This repository contains the source files for Talaxie Open Studio for Data Integration. These files must be used together with the common code contained in [tcommon-studio-se](https://github.com/Talaxie/tcommon-studio-se).
 
 
 ## Repository Structure
@@ -27,18 +27,18 @@ All Talaxie Studio repositories follow the same file structure:
 
 ## Download
 
-You can download this product from the [Talaxie website](http://www.talend.com/download/talend-open-studio?qt-product_tos_download_new=1&utm_medium=communityext&utm_source=github&utm_campaign=tosdi).
+You can download this product from the [Talaxie website](https://deilink.fr/#/download).
 
 
 ## Usage and Documentation
 
-Documentation is available on [Talaxie Help Center](http://help.talend.com/).
+Documentation is available on [Talaxie Help Center](https://deilink.fr/#/contact).
 
 
 
 ## Support
 
-You can ask for help on our [Forum](http://www.talend.com/services/global-technical-support).
+You can ask for help on our [Forum](https://deilink.fr/#/contact).
 
 
 ## Contributing
