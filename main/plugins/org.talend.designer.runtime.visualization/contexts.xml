@@ -5,8 +5,11 @@
 		<topic href="/PLUGINS_ROOT/org.eclipse.platform.doc.isv/guide/ua_help_context.htm" label="Context-sensitive help">
 			<enablement>
 				<with variable="platform">
-	            	<test property="org.eclipse.core.runtime.isBundleInstalled" args="org.eclipse.platform.doc.isv"/>
-	     		</with>
+          <test
+            property="org.eclipse.core.runtime.isBundleInstalled"
+            args="org.eclipse.platform.doc.isv"
+          />
+        </with>
 			</enablement>
 		</topic>
 	</context>
