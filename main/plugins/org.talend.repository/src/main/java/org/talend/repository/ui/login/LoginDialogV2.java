@@ -279,7 +279,6 @@ public class LoginDialogV2 extends TrayDialog {
         AbstractLoginActionPage loginPage = null;
         boolean isAcceptAgreement = LicenseManagement.isLicenseValidated();
         if (!isAcceptAgreement) {
-            // must accept agreement
             loginPage = new LoginAgreementPage(base, this, SWT.NONE);
         } else if (LoginHelper.isTalendLogonFirstTimeStartup()) {
             loginPage = getFirstTimeStartupPageIfNeeded();

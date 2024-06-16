@@ -71,8 +71,7 @@ public class LoginAgreementPage extends AbstractLoginActionPage {
         container.setLayout(new FormLayout());
         // image
         Label imageLabel = new Label(container, SWT.RIGHT);
-        ImageDescriptor imageDescriptor =
-                ImageDescriptor.createFromURL(this.getClass().getResource("/icons/License.png"));
+        ImageDescriptor imageDescriptor = ImageDescriptor.createFromURL(this.getClass().getResource("/icons/License.png"));
         Image image = imageDescriptor.createImage();
         addResourceDisposeListener(imageLabel, image);
         imageLabel.setImage(image);
@@ -117,9 +116,7 @@ public class LoginAgreementPage extends AbstractLoginActionPage {
 
         // deilink link
         agreementLink = new Link(container, SWT.NONE);
-        agreementLink
-                .setText("<a href=\"" + Messages.getString("LoginAgreementPage.QlikURL") + "\">" //$NON-NLS-1$
-                        + Messages.getString("LoginAgreementPage.QlikAgreement") + "</a>");//$NON-NLS-2$
+        agreementLink .setText("<a href=\"" + Messages.getString("LoginAgreementPage.QlikURL") + "\">" + Messages.getString("LoginAgreementPage.QlikAgreement") + "</a>"); //$NON-NLS-2$
         layoutData = new FormData();
         layoutData.top = new FormAttachment(60);
         layoutData.left = new FormAttachment(iHaveReadLabel, offset);
@@ -135,7 +132,6 @@ public class LoginAgreementPage extends AbstractLoginActionPage {
         acceptButtonFormLayoutData.right = new FormAttachment(100, 0);
         acceptButtonFormLayoutData.left = new FormAttachment(100, -1 * LoginDialogV2.getNewButtonSize(acceptButton).x);
         acceptButton.setLayoutData(acceptButtonFormLayoutData);
-
     }
 
 

@@ -286,8 +286,7 @@ public class LoginComposite extends Composite {
      * @param parent Parent component.
      * @param style Style bits.
      */
-    public LoginComposite(Composite parent, int style, LoginDialog dialog, TOSLoginComposite tosLoginComposite,
-            StackLayout stackLayout) {
+    public LoginComposite(Composite parent, int style, LoginDialog dialog, TOSLoginComposite tosLoginComposite, StackLayout stackLayout) {
         super(parent, style);
         this.dialog = dialog;
         perReader = ConnectionUserPerReader.getInstance();
@@ -1311,8 +1310,7 @@ public class LoginComposite extends Composite {
         }
 
         if (getConnection() != null) {
-            final boolean localConn = getConnection().getRepositoryId() == null
-                    || getConnection().getRepositoryId().equals(RepositoryConstants.REPOSITORY_LOCAL_ID);
+            final boolean localConn = getConnection().getRepositoryId() == null || getConnection().getRepositoryId().equals(RepositoryConstants.REPOSITORY_LOCAL_ID);
             boolean visible = PluginChecker.isRemoteProviderPluginLoaded() && !localConn;
             if (passwordLabel != null) {
                 passwordLabel.setVisible(visible);

@@ -463,24 +463,6 @@
         toolbarPath="Default"
         tooltip="%ExportItemAction.tooltip"
       />
-      <!--
-      <action
-        class="org.talend.repository.items.importexport.ui.actions.ServerWebAction"
-        icon="platform:/plugin/org.talend.common.ui.runtime/icons/web_16x16.png"
-        id="org.talend.repository.items.importexport.ui.actions.ServerWebAction"
-        label="%ServerWebAction.title"
-        style="push"
-        toolbarPath="Default"
-        tooltip="%ServerWebAction.tooltip"
-      >
-        <enablement>
-          <systemProperty
-            name="ReadOnlyUser"
-            value="false"
-          />
-        </enablement>
-      </action>
-      -->
     </actionSet>
     <actionSet
       id="org.talend.repository.demoprojcet.actionSet"

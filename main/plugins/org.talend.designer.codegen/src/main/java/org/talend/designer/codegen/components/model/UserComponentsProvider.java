@@ -96,8 +96,7 @@ public class UserComponentsProvider extends AbstractCustomComponentsProvider imp
                         if (file.isFile() && UpdatesHelper.isComponentUpdateSite(file)) {
                             // TUP-17680, won't support to install the new CF from project
                         } else if (UpdatesHelper.isOldComponent(file)) {
-                            FilesUtils.copyFolder(file, new File(installationFolder.getAbsolutePath(), file.getName()), true, ff,
-                                    null, true, false);
+                            FilesUtils.copyFolder(file, new File(installationFolder.getAbsolutePath(), file.getName()), true, ff, null, true, false);
                         }
                     }
                 }
@@ -108,15 +107,13 @@ public class UserComponentsProvider extends AbstractCustomComponentsProvider imp
 
     @Override
     public String getComponentsLocation() {
-        return new Path(IComponentsFactory.COMPONENTS_INNER_FOLDER).append(IComponentsFactory.EXTERNAL_COMPONENTS_INNER_FOLDER)
-                .append(ComponentUtilities.getExtFolder(getFolderName())).toString();
+        return new Path(IComponentsFactory.COMPONENTS_INNER_FOLDER).append(IComponentsFactory.EXTERNAL_COMPONENTS_INNER_FOLDER).append(ComponentUtilities.getExtFolder(getFolderName())).toString();
     }
 
     @Override
     public File getInstallationFolder() throws IOException {
         String componentsPath = IComponentsFactory.COMPONENTS_LOCATION;
-        IBrandingService breaningService = (IBrandingService) GlobalServiceRegister.getDefault().getService(
-                IBrandingService.class);
+        IBrandingService breaningService = (IBrandingService) GlobalServiceRegister.getDefault().getService(IBrandingService.class);
         if (breaningService.isPoweredOnlyCamel()) {
             componentsPath = IComponentsFactory.CAMEL_COMPONENTS_LOCATION;
         }
@@ -128,8 +125,7 @@ public class UserComponentsProvider extends AbstractCustomComponentsProvider imp
         URL fileUrl = FileLocator.toFileURL(url);
         File bundleFolder = new File(fileUrl.getPath());
 
-        IPath path = new Path(IComponentsFactory.COMPONENTS_INNER_FOLDER)
-                .append(IComponentsFactory.EXTERNAL_COMPONENTS_INNER_FOLDER);
+        IPath path = new Path(IComponentsFactory.COMPONENTS_INNER_FOLDER).append(IComponentsFactory.EXTERNAL_COMPONENTS_INNER_FOLDER);
         path = path.append(ComponentUtilities.getExtFolder(getFolderName()));
 
         installationFolder = new File(bundleFolder, path.toOSString());
