@@ -119,9 +119,16 @@ public class BuildJobManager {
         return value;
     }
 
-    public boolean buildJobs(String destinationPath, List<? extends IRepositoryNode> nodes, List<String> topNames,
-            String version, String context, Map<ExportChoice, Object> exportChoiceMap, JobExportType jobExportType,
-            IProgressMonitor monitor) throws Exception {
+    public boolean buildJobs(
+        String destinationPath,
+        List<? extends IRepositoryNode> nodes,
+        List<String> topNames,
+        String version,
+        String context,
+        Map<ExportChoice, Object> exportChoiceMap,
+        JobExportType jobExportType,
+        IProgressMonitor monitor
+    ) throws Exception {
         IProgressMonitor pMonitor = new NullProgressMonitor();
         if (monitor != null) {
             pMonitor = monitor;
@@ -133,8 +140,7 @@ public class BuildJobManager {
         } else {
             int scale = 1000;
             int steps = 3;
-            pMonitor.beginTask(
-                    Messages.getString("JobScriptsExportWizardPage.newExportJobScript", jobExportType), steps * scale * nodes.size()); //$NON-NLS-1$
+            pMonitor.beginTask(Messages.getString("JobScriptsExportWizardPage.newExportJobScript", jobExportType), steps * scale * nodes.size()); //$NON-NLS-1$
             String topName = null;
             if (topNames != null && !topNames.isEmpty()) {
                 topName = topNames.get(0);
@@ -157,8 +163,7 @@ public class BuildJobManager {
                 ProcessItem processItem = processes.get(i);
                 pMonitor.setTaskName(Messages.getString("BuildJobManager.building", processItem.getProperty().getLabel()));//$NON-NLS-1$
 
-                IBuildJobHandler buildJobHandler = BuildJobFactory.createBuildJobHandler(processItem, context, processItem
-                        .getProperty().getVersion(), exportChoiceMap, jobExportType);
+                IBuildJobHandler buildJobHandler = BuildJobFactory.createBuildJobHandler(processItem, context, processItem.getProperty().getVersion(), exportChoiceMap, jobExportType);
 
                 Map<String, Object> prepareParams = new HashMap<String, Object>();
                 prepareParams.put(IBuildResourceParametes.OPTION_ITEMS, true);

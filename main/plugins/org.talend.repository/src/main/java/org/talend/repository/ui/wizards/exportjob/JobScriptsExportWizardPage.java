@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.ErrorDialog;
@@ -1475,10 +1476,12 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
         }
 
         JobExportType jobExportType = getCurrentExportType1();
-        if (JobExportType.POJO.equals(jobExportType) || JobExportType.MSESB.equals(jobExportType)
-                || JobExportType.OSGI.equals(jobExportType) || JobExportType.IMAGE.equals(jobExportType)
-                || JobExportType.MSESB_IMAGE.equals(jobExportType)) {
-                    
+        if (JobExportType.POJO.equals(jobExportType) ||
+            JobExportType.MSESB.equals(jobExportType) ||
+            JobExportType.OSGI.equals(jobExportType) ||
+            JobExportType.IMAGE.equals(jobExportType) ||
+            JobExportType.MSESB_IMAGE.equals(jobExportType)
+        ) {
             // TODO Jean Cazaux
             /*
             String message = "Info export job #1\n"; //$NON-NLS-1$
@@ -1513,7 +1516,6 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
                     buildJobWithMaven(jobExportType, monitor);
                 }
             };
-
             try {
                 getContainer().run(true, true, worker);
             } catch (InvocationTargetException e) {
@@ -1593,39 +1595,19 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
 
         // Export to EtlTool
         if (isAddWebhook()) {
+            IRunnableWithProgress worker = new IRunnableWithProgress() {
+                @Override
+                public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+                    exportWebhook(monitor);
+                }
+            };
             try {
-                String projectLabel = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
-                List<String> defaultFileName = getDefaultFileName();
-                HashMap<String, String> jobData = Webhook.export(manager.getDestinationPath(), projectLabel, defaultFileName.get(0), selectedJobVersion, selectedNexusRepo);
-
-                if (CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_ETLTOOL_ENABLED)) {
-                    String message = "Voulez-vous ouvrir le job sur EtlTool ?\n"; //$NON-NLS-1$
-                    message += "Projet: " + jobData.get("Projet") + "\n";
-                    message += "Sequenceur: " + jobData.get("Sequenceur") + "\n";
-                    message += "Version: " + jobData.get("JobVersion") + "\n";
-                    MessageDialog messageDialog = new MessageDialog(
-                        DisplayUtils.getDefaultShell(false),
-                        "Talaxie - export de la build vers EtlTool", //$NON-NLS-1$
-                        null,
-                        message, //$NON-NLS-1$
-                        MessageDialog.CONFIRM,
-                        new String[] {
-                            IDialogConstants.OK_LABEL,
-                            IDialogConstants.CANCEL_LABEL
-                        },
-                        0
-                    ); //$NON-NLS-1$
-                    if (messageDialog.open() == 0) {
-                        URL jobURL = new URL(Webhook.getJobUrl(jobData));
-                        PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser().openURL(jobURL);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                if (LOGGER.isInfoEnabled()) {
-                    LOGGER.info("Webhook");
-                    LOGGER.info(e);
-                }
+                getContainer().run(true, true, worker);
+            } catch (InvocationTargetException e) {
+                MessageBoxExceptionHandler.process(e.getCause(), getShell());
+                return false;
+            } catch (InterruptedException e) {
+                return false;
             }
         }
 
@@ -1645,8 +1627,8 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
                 @Override
                 public void run() {
                     String contextTemp = (contextCombo == null || contextCombo.isDisposed())
-                            ? processItem.getProcess().getDefaultContext()
-                            : contextCombo.getText();
+                        ? processItem.getProcess().getDefaultContext()
+                        : contextCombo.getText();
                     context.append(contextTemp);
                     String destinationValue = getDestinationValue();
                     destination.append(destinationValue);
@@ -1664,6 +1646,7 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
             }
             exportChoiceMap.put(ExportChoice.addStatistics, Boolean.TRUE);
 
+            /*
 			if (LOGGER.isInfoEnabled()) {
 				LOGGER.info("-- buildJobs");
 				LOGGER.info(destinationStr);
@@ -1674,6 +1657,7 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
 				LOGGER.info(exportChoiceMap);
 				LOGGER.info(jobExportType);
 			}
+            */
             return BuildJobManager.getInstance().buildJobs(destinationStr, checkedNodes, getDefaultFileName(), getSelectedJobVersion(), context.toString(), exportChoiceMap, jobExportType, monitor);
 
         } catch (Exception e) {
@@ -1938,4 +1922,65 @@ public abstract class JobScriptsExportWizardPage extends WizardFileSystemResourc
         return "Job";
     }
 
+    protected Boolean exportWebhook(IProgressMonitor monitor) {
+        IProgressMonitor pMonitor = new NullProgressMonitor();
+        if (monitor != null) {
+            pMonitor = monitor;
+        }
+        pMonitor.beginTask("Export vers EtlTool...", 7);
+        pMonitor.worked(1);
+
+        try {
+            String projectLabel = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+            List<String> defaultFileName = getDefaultFileName();
+            HashMap<String, String>  jobData = Webhook.export(manager.getDestinationPath(), projectLabel, defaultFileName.get(0), selectedJobVersion, selectedNexusRepo, monitor);
+            
+            Display.getDefault().asyncExec(new Runnable() {
+
+                @Override
+                public void run() {
+                    try {
+                        if (CoreUIPlugin.getDefault().getPreferenceStore().getBoolean(ITalendCorePrefConstants.WEBHOOK_ETLTOOL_ENABLED)) {
+                            String message = "Voulez-vous ouvrir le job sur EtlTool ?\n"; //$NON-NLS-1$
+                            message += "Projet: " + jobData.get("Projet") + "\n";
+                            message += "Sequenceur: " + jobData.get("Sequenceur") + "\n";
+                            message += "Version: " + jobData.get("JobVersion") + "\n";
+                            MessageDialog messageDialog = new MessageDialog(
+                                getShell(),
+                                "Talaxie - export de la build vers EtlTool", //$NON-NLS-1$
+                                null,
+                                message, //$NON-NLS-1$
+                                MessageDialog.CONFIRM,
+                                new String[] {
+                                    IDialogConstants.OK_LABEL,
+                                    IDialogConstants.CANCEL_LABEL
+                                },
+                                0
+                            ); //$NON-NLS-1$
+                            if (messageDialog.open() == 0) {
+                                URL jobURL = new URL(Webhook.getJobUrl(jobData));
+                                PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser().openURL(jobURL);
+                            }
+                        }
+                    } catch (Exception e) {
+                        if (LOGGER.isInfoEnabled()) {
+                            LOGGER.info("Error - Webhook export");
+                            LOGGER.info(e);
+                        }
+                    }
+                }
+
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER.info("Webhook");
+                LOGGER.info(e);
+            }
+        }
+        pMonitor.worked(7);
+        pMonitor.done();
+
+        return true;
+    }
 }

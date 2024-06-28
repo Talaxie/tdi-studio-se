@@ -1675,10 +1675,6 @@ public class LoginProjectPage extends AbstractLoginActionPage {
     }
 
     private void cancelAllBackgroundJobs(Job currentJob) {
-//        if (backgroundLoadUIJob != null) {
-//            backgroundLoadUIJob.cancel();
-//            backgroundLoadUIJob = null;
-//        }
         if (backgroundSandboxChecker != null && backgroundSandboxChecker != currentJob) {
             backgroundSandboxChecker.cancel();
             Optional.ofNullable(backgroundSandboxChecker.getThread()).ifPresent(t -> t.interrupt());
