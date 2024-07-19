@@ -22,7 +22,8 @@ Require-Bundle: org.eclipse.ui.workbench,
  org.talend.components.api,
  org.talend.common.ui.runtime,
  org.apache.log4j,
- org.talend.commons.runtime
+ org.talend.commons.runtime,
+ org.eclipse.emf.common
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: .Talaxie SA.
 Import-Package: org.eclipse.gef.commands

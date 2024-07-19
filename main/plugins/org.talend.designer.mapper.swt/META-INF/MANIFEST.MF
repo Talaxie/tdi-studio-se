@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Automatic-Module-Name: org.talend.designer.mapper.swt
 Bundle-ManifestVersion: 2
 Bundle-Name: org.talend.designer.mapper.swt
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-SymbolicName: org.talend.designer.mapper.swt;singleton:=true
 Bundle-Version: 8.8.8.qualifier
 Fragment-Host: org.talend.designer.mapper
-Require-Bundle: org.apache.commons.collections,
- org.eclipse.ui.forms,
+Require-Bundle: org.eclipse.ui.forms,
  org.eclipse.ui.views.properties.tabbed,
  org.talend.designer.core.swt;resolution:=optional
 Bundle-ActivationPolicy: lazy

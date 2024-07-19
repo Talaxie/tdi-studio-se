@@ -6,7 +6,6 @@ Bundle-Name: Designer Core Plug-in
 Bundle-SymbolicName: org.talend.designer.core;singleton:=true
 Bundle-Version: 8.8.8.qualifier
 Bundle-Localization: plugin
-Bundle-ClassPath: .
 Bundle-Activator: org.talend.designer.core.DesignerPlugin
 Require-Bundle: org.talend.model,
  org.eclipse.osgi.services,
@@ -75,7 +74,8 @@ Require-Bundle: org.talend.model,
  com.fasterxml.jackson.core.jackson-databind,
  org.talend.cwm.mip,
  org.eclipse.gmf.runtime.notation,
- avro
+ avro,
+ org.apache.axis
 Eclipse-LazyStart: true
 Plugin-Class: org.talend.designer.core.DesignerPlugin
 Export-Package: org.talend.designer.core;
@@ -269,8 +269,6 @@ Export-Package: org.talend.designer.core;
 Bundle-Vendor: .Talaxie SA.
 Service-Component: OSGI-INF/core.xml
 Eclipse-ExtensibleAPI: true
-Import-Package: org.apache.axis.utils,
- org.apache.axis.wsdl,
- org.slf4j,
+Import-Package: org.slf4j,
  org.talend.hadoop.distribution,
  org.talend.hadoop.distribution.component

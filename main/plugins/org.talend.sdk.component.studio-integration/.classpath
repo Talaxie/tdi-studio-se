@@ -56,7 +56,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/tomcat-websocket.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tomcat-websocket-api.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/rhino.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
@@ -67,5 +67,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry exported="true" kind="lib" path="lib/jruby-base.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
