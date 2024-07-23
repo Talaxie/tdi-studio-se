@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: BigQuery
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-SymbolicName: org.talend.libraries.bigquery;singleton:=true
 Bundle-Version: 8.8.8.qualifier
 Bundle-ClassPath: .,

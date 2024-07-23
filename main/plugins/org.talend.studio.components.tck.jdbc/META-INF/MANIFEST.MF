@@ -25,6 +25,7 @@ Require-Bundle: org.eclipse.emf.ecore,
  org.talend.components.api
 Bundle-Vendor: .Talaxie SA.
 Import-Package: org.eclipse.core.runtime,
- org.slf4j
+ org.slf4j,
+ org.talend.daikon;version="[0.0.0,8.0.0)"
 Bundle-ClassPath: .
 Eclipse-BundleShape: dir

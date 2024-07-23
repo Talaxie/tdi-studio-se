@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Data Integration View Plug-in
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-SymbolicName: org.talend.repository.view.di;singleton:=true
 Automatic-Module-Name: org.talend.repository.view.di
 Bundle-Version: 8.8.8.qualifier

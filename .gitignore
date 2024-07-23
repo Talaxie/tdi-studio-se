@@ -7,11 +7,12 @@ class/
 classes/
 .settings/
 main/plugins/org.talend.designer.codegen/resources/sparkstreaming_footer.javajet
+main/plugins/**/dist/*.jar
 main/plugins/org.talend.designer.codegen/resources/sparkstreaming_header.javajet
 main/plugins/org.talend.designer.codegen/resources/sparkstreaming_subprocess_footer.javajet
 main/plugins/org.talend.designer.codegen/resources/sparkstreaming_subprocess_header.javajet
 main/plugins/org.talend.designer.codegen/resources/routelet.skeleton
-main/plugins/org.talend.studio.components.tcompv0.marklogic/repository/maven_repository.zip
+main/plugins/**/repository/*.zip
 .DS_Store
 components.cache
 maven_repository.zip
