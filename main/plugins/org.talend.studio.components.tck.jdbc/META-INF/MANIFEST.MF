@@ -5,7 +5,7 @@ Bundle-Name: Tacokit JDBC Plug-in
 Bundle-SymbolicName: org.talend.studio.components.tck.jdbc;singleton:=true
 Bundle-Version: 8.8.8.qualifier
 Bundle-Localization: plugin
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.emf.ecore,
  org.eclipse.jface,
  org.eclipse.ui.workbench,

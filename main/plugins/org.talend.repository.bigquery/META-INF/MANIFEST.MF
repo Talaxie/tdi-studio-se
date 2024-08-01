@@ -6,7 +6,8 @@ Bundle-SymbolicName: org.talend.repository.bigquery;singleton:=true
 Bundle-Version: 8.8.8.qualifier
 Bundle-Activator: org.talend.repository.bigquery.BigQueryPlugin
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.ui,
+Require-Bundle: org.talend.repository.view,
+ org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore.xmi,
  org.apache.log4j,
@@ -23,7 +24,6 @@ Require-Bundle: org.eclipse.ui,
  org.talend.core.ui,
  org.talend.repository.items.importexport,
  org.talend.repository.view.di,
- org.talend.repository.view,
  org.talend.libraries.bigquery,
  org.talend.cwm.mip,
  org.eclipse.core.resources,

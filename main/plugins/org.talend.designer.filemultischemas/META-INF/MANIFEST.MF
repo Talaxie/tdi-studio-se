@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: MultiSchemas Component Plug-in
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-SymbolicName: org.talend.designer.filemultischemas;singleton:=true
 Bundle-Version: 8.8.8.qualifier
 Require-Bundle: org.eclipse.ui.workbench,
