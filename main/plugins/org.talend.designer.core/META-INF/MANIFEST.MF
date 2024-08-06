@@ -75,8 +75,7 @@ Require-Bundle: org.talend.model,
  com.fasterxml.jackson.core.jackson-databind,
  org.talend.cwm.mip,
  org.eclipse.gmf.runtime.notation,
- avro,
- org.apache.axis
+ avro
 Eclipse-LazyStart: true
 Plugin-Class: org.talend.designer.core.DesignerPlugin
 Export-Package: org.talend.designer.core;
@@ -270,6 +269,8 @@ Export-Package: org.talend.designer.core;
 Bundle-Vendor: .Talaxie SA.
 Service-Component: OSGI-INF/core.xml
 Eclipse-ExtensibleAPI: true
-Import-Package: org.slf4j,
+Import-Package: org.apache.axis.utils,
+ org.apache.axis.wsdl,
+ org.slf4j,
  org.talend.hadoop.distribution,
  org.talend.hadoop.distribution.component
