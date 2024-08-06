@@ -9,28 +9,11 @@
 	</parent>
 	<artifactId>tdi-studio-se</artifactId>
 	<packaging>pom</packaging>
-	<repositories>
-		<repository>
-			<id>talend_open</id>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<url>https://nexus.deilink.fr/repository/talaxie/</url>
-		</repository>
-		<repository>
-			<id>talend_open_snapshots</id>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<url>https://nexus.deilink.fr/repository/talaxie/</url>
-		</repository>
-	</repositories>
+	
+	
+	
+	
+
 	<modules>
 		<module>main/features/org.talend.designer.feature</module>
 		<module>main/features/org.talend.gmf.feature</module>
@@ -86,7 +69,6 @@
 		<module>main/plugins/org.talend.libraries.slf4j</module>
 		<module>main/plugins/org.talend.libraries.uniserv</module>
 		<module>main/plugins/org.talend.libraries.w3c</module>
-		<module>main/plugins/org.talend.libraries.xml</module>
 		<module>main/plugins/org.talend.libraries.zmq</module>
 		<module>main/plugins/org.talend.presentation.onboarding.resource</module>
 		<module>main/plugins/org.talend.presentation.onboarding.resource.tos</module>
@@ -146,6 +128,8 @@
 		<module>test/plugins/org.talend.sdk.component.studio-integration.test</module>
 		<module>test/plugins/org.talend.expressionbuilder.test</module>
 	</modules>
+	
+	<!-- OPC : voir si cette partie est vraiment utile... ? -->
 	<build>
 		<plugins>
 			<plugin>
