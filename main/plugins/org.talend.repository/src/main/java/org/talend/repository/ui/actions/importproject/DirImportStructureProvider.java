@@ -157,4 +157,12 @@ public class DirImportStructureProvider implements ILeveledImportStructureProvid
         return false;
     }
 
+    @Override
+	public void close() throws Exception {
+		// TODO Auto-generated method stub
+		// OPCoach : added this method for compilation... Must implement it... 
+		throw new UnsupportedOperationException("Should implement the close method in DirImportStructureProvider");
+		
+	}
+
 }
