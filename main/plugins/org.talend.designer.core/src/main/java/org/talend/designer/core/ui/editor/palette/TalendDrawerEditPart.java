@@ -17,6 +17,7 @@ import java.beans.PropertyChangeEvent;
 import org.eclipse.draw2d.FocusEvent;
 import org.eclipse.draw2d.FocusListener;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.ScrollPane;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.internal.InternalImages;
 import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
@@ -42,6 +43,42 @@ public class TalendDrawerEditPart extends DrawerEditPart {
     protected void unregister() {
         super.unregister();
     }
+    
+    // Migration 2024-06
+    PaletteDrawer getDrawer()
+    {
+    	return new PaletteDrawer("TO BE IMPLEMENTED");
+    }
+    
+    class PaletteDrawerFigure extends PaletteDrawer
+    {
+
+		public PaletteDrawerFigure(String label) {
+			super(label);
+		}
+		
+		boolean isExpanded() { return true; }
+		void setExpanded(boolean test) {  throw new UnsupportedOperationException("Must implement PaletteDrawerFigure"); } 
+		void showPin(boolean test) {  throw new UnsupportedOperationException("Must implement PaletteDrawerFigure"); } 
+		void setTitle(String t) { throw new UnsupportedOperationException("Must implement PaletteDrawerFigure"); } 
+		void setLayoutMode(int t) { throw new UnsupportedOperationException("Must implement PaletteDrawerFigure"); } 
+		ScrollPane getScrollpane() { throw new UnsupportedOperationException("Must implement PaletteDrawerFigure"); }
+
+		public void setToolTip(IFigure toolTip) {
+			 throw new UnsupportedOperationException("Must implement PaletteDrawerFigure");
+			
+		} 
+	
+		
+    	
+    }
+    
+    // Migration 2024-06
+    PaletteDrawerFigure getDrawerFigure()
+    {
+    	return new PaletteDrawerFigure("TO BE IMPLEMENTED");
+    }
+
 
     @Override
     protected void unregisterVisuals() {
