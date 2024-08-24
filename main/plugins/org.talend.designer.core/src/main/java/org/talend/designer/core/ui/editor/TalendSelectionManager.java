@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.SelectionManager;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
@@ -185,8 +186,8 @@ public class TalendSelectionManager extends SelectionManager {
             if (element instanceof SubjobContainerPart) {
                 // childrens are NodeContainer part
                 newSelection.remove(element);
-                List<NodeContainerPart> nodeContainerParts = ((SubjobContainerPart) element).getChildren();
-                for (NodeContainerPart nodeContainerPart : nodeContainerParts) {
+                List<? extends GraphicalEditPart> nodeContainerParts = ((SubjobContainerPart) element).getChildren();
+                for (GraphicalEditPart nodeContainerPart : nodeContainerParts) {
                     for (Object object : nodeContainerPart.getChildren()) {
                         if (object instanceof NodePart) {
                             if (!newSelection.contains(object)) {

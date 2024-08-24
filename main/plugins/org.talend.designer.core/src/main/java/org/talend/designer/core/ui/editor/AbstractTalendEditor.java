@@ -1959,7 +1959,7 @@ public abstract class AbstractTalendEditor extends GraphicalEditorWithFlyoutPale
                 selectedConnectionPart = null;
             } else if (keyEvent.stateMask == SWT.CTRL
                     && (keyCode == SWT.ARROW_UP || keyCode == SWT.ARROW_DOWN || keyCode == SWT.ARROW_LEFT || keyCode == SWT.ARROW_RIGHT)) {
-                List<EditPart> parts = viewer.getSelectedEditParts();
+                List<? extends EditPart> parts = viewer.getSelectedEditParts();
                 if (parts == null) {
                     return;
                 }

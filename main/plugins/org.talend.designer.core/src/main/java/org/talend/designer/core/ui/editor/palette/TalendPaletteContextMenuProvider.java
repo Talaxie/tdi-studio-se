@@ -13,6 +13,7 @@
 package org.talend.designer.core.ui.editor.palette;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -218,7 +219,7 @@ public class TalendPaletteContextMenuProvider extends PaletteContextMenuProvider
             if (element instanceof TalendPaletteDrawer) {
 
                 List<TalendPaletteDrawer> eleList = new ArrayList<TalendPaletteDrawer>(
-                        ((TalendPaletteDrawer) element).getChildren());
+                        (Collection<? extends TalendPaletteDrawer>) ((TalendPaletteDrawer) element).getChildren());
                 addListNotes(eleList, project, paletteViewer);
             } else if (element instanceof CombinedTemplateCreationEntry) {
                 addNotes((CombinedTemplateCreationEntry) element, project, paletteViewer);
@@ -257,7 +258,7 @@ public class TalendPaletteContextMenuProvider extends PaletteContextMenuProvider
             if (element instanceof TalendPaletteDrawer) {
 
                 List<TalendPaletteDrawer> eleList = new ArrayList<TalendPaletteDrawer>(
-                        ((TalendPaletteDrawer) element).getChildren());
+                        (Collection<? extends TalendPaletteDrawer>) ((TalendPaletteDrawer) element).getChildren());
                 removeListNotes(eleList, project, paletteViewer);
             } else if (element instanceof CombinedTemplateCreationEntry) {
                 removeNotes((CombinedTemplateCreationEntry) element, project, paletteViewer);

@@ -130,8 +130,8 @@ public class JobletContainerPart extends NodeContainerPart implements ICrossPlat
             // ((JobletContainerFigure) figure).setInfoHint(node.getShowHintText());
         } else if (JobletContainer.UPDATE_JOBLET_CONTENT.equals(prop)) {
             refresh();
-            List<AbstractGraphicalEditPart> childrens = getChildren();
-            for (AbstractGraphicalEditPart part : childrens) {
+            List<? extends GraphicalEditPart> childrens = getChildren();
+            for (GraphicalEditPart part : childrens) {
                 part.refresh();
             }
             needUpdateSubjob = true;
