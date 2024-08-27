@@ -13,6 +13,7 @@
 package org.talend.designer.xmlmap.dnd;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,9 +75,9 @@ public class XmlDragSourceListener extends MapperDragSourceListener {
         if (filtedSelection == null || filtedSelection.isEmpty()) {
             return null;
         }
-        List toTransfer = new ArrayList();
+        List<EditPart> toTransfer = new ArrayList<>();
         TransferdType type = null;
-        List<TableEntityPart> partList = new ArrayList<TableEntityPart>();
+        List<TableEntityPart> partList = new ArrayList<>();
         EditPart lastSelection = filtedSelection.get(filtedSelection.size() - 1);
         if (lastSelection instanceof TreeNodeEditPart && !(lastSelection instanceof OutputTreeNodeEditPart)) {
             type = TransferdType.INPUT;
@@ -86,7 +87,8 @@ public class XmlDragSourceListener extends MapperDragSourceListener {
 
         if (type != null) {
             if (filtedSelection.size() > 1) {
-                partList.addAll(lastSelection.getParent().getChildren());
+            	// OPCoach : revoir ce cast ... 
+                partList.addAll((Collection<? extends TableEntityPart>) lastSelection.getParent().getChildren());
                 Map<EditPart, Integer> partAndIndex = new HashMap<EditPart, Integer>();
                 if (type == TransferdType.INPUT) {
                     for (EditPart treePart : filtedSelection) {
@@ -100,7 +102,7 @@ public class XmlDragSourceListener extends MapperDragSourceListener {
                         partList = MapperUtils.getFlatChildrenPartList(abstractInOutTreePart);
                     }
                 } else {
-                    partList.addAll(lastSelection.getParent().getChildren());
+                    partList.addAll((Collection<? extends TableEntityPart>) lastSelection.getParent().getChildren());
                 }
 
                 for (EditPart selected : filtedSelection) {

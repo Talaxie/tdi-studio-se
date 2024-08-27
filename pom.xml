@@ -68,6 +68,7 @@
 		<module>main/plugins/org.talend.libraries.salesforce</module>
 		<module>main/plugins/org.talend.libraries.slf4j</module>
 		<module>main/plugins/org.talend.libraries.uniserv</module>
+		<module>main/plugins/org.talend.libraries.xml</module>
 		<module>main/plugins/org.talend.libraries.w3c</module>
 		<module>main/plugins/org.talend.libraries.zmq</module>
 		<module>main/plugins/org.talend.presentation.onboarding.resource</module>
