@@ -6,6 +6,7 @@ target/
 class/
 classes/
 .settings/
+main/plugins/org.talend.repository/lib/*.jar
 main/plugins/org.talend.designer.codegen/resources/sparkstreaming_footer.javajet
 main/plugins/**/dist/*.jar
 main/plugins/org.talend.designer.codegen/resources/sparkstreaming_header.javajet
