@@ -12,7 +12,7 @@
 // ============================================================================
 package org.talend.designer.core.ui.dialog;
 
-import org.apache.commons.collections.BidiMap;
+import org.apache.commons.collections4.BidiMap;
 import org.eclipse.swt.widgets.Shell;
 import org.talend.designer.core.ui.editor.nodes.Node;
 

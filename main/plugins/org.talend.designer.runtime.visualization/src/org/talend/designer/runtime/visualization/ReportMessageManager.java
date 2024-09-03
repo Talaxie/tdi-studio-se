@@ -2,7 +2,7 @@ package org.talend.designer.runtime.visualization;
 
 import java.util.Iterator;
 
-import org.apache.commons.collections.buffer.UnboundedFifoBuffer;
+import org.apache.commons.collections4.buffer.UnboundedFifoBuffer;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.graphics.Color;
 

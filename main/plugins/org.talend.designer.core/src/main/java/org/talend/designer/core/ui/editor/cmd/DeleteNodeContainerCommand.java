@@ -15,7 +15,7 @@ package org.talend.designer.core.ui.editor.cmd;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.map.MultiKeyMap;
+import org.apache.commons.collections4.map.MultiKeyMap;
 import org.eclipse.gef.commands.Command;
 import org.talend.core.CorePlugin;
 import org.talend.core.model.metadata.IMetadataTable;

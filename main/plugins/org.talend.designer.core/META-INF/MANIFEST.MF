@@ -8,6 +8,7 @@ Bundle-SymbolicName: org.talend.designer.core;singleton:=true
 Bundle-Version: 8.8.8.qualifier
 Bundle-Localization: plugin
 Bundle-Activator: org.talend.designer.core.DesignerPlugin
+Bundle-ClassPath: .
 Require-Bundle: org.talend.model,
  org.eclipse.osgi.services,
  org.eclipse.jface.text,
@@ -18,7 +19,6 @@ Require-Bundle: org.talend.model,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.ui.views.properties.tabbed,
  org.eclipse.gef,
- org.apache.commons.collections,
  org.apache.commons.io,
  org.apache.commons.lang,
  org.talend.core,
@@ -78,7 +78,9 @@ Require-Bundle: org.talend.model,
  avro
 Eclipse-LazyStart: true
 Plugin-Class: org.talend.designer.core.DesignerPlugin
-Export-Package: org.talend.designer.core;
+Export-Package: org.apache.commons.collections4.bidimap,
+ org.apache.commons.collections4.map,
+ org.talend.designer.core;
   uses:="org.talend.core.model.process,
    org.eclipse.jface.resource,
    org.talend.core.model.properties,
@@ -97,7 +99,6 @@ Export-Package: org.talend.designer.core;
  org.talend.designer.core.debug,
  org.talend.designer.core.i18n,
  org.talend.designer.core.model,
- org.talend.designer.core.model.components,
  org.talend.designer.core.model.components.manager,
  org.talend.designer.core.model.metadata,
  org.talend.designer.core.model.process,
@@ -271,6 +272,7 @@ Service-Component: OSGI-INF/core.xml
 Eclipse-ExtensibleAPI: true
 Import-Package: org.apache.axis.utils,
  org.apache.axis.wsdl,
+ org.apache.commons.collections4,
  org.slf4j,
  org.talend.hadoop.distribution,
  org.talend.hadoop.distribution.component

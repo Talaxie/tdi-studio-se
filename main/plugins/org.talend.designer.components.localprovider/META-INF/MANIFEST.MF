@@ -4,8 +4,7 @@ Bundle-Name: Components Local provider Plug-in
 Bundle-SymbolicName: org.talend.designer.components.localprovider;singleton:=true
 Bundle-Version: 8.8.8.qualifier
 Bundle-Activator: org.talend.designer.components.ComponentsLocalProviderPlugin
-Require-Bundle: org.apache.commons.collections,
- org.talend.common.ui.runtime,
+Require-Bundle: org.talend.common.ui.runtime,
  org.talend.core,
  org.talend.librariesmanager,
  org.talend.model,
@@ -23,5 +22,6 @@ Eclipse-LazyStart: true
 Bundle-Vendor: .Talaxie SA.
 Bundle-ClassPath: .
 Export-Package: org.talend.designer.components.lookup.common
+Import-Package: org.apache.commons.collections4.list
 Eclipse-BundleShape: dir
 Automatic-Module-Name: org.talend.designer.components.localprovider

@@ -17,7 +17,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.resources,
  org.eclipse.debug.ui,
  org.eclipse.jdt.launching,
- org.apache.commons.collections,
  org.talend.utils
 Bundle-ActivationPolicy: lazy
 Export-Package: org.talend.designer.runtime.visualization,
@@ -39,6 +38,7 @@ Export-Package: org.talend.designer.runtime.visualization,
  org.talend.designer.runtime.visualization.internal.ui.properties.thread,
  org.talend.designer.runtime.visualization.internal.ui.properties.timeline,
  org.talend.designer.runtime.visualization.views
+Import-Package: org.apache.commons.collections4
 Bundle-ClassPath: .,
  lib/org.swtchart_0.8.0.v20120301.jar
 Automatic-Module-Name: org.talend.designer.runtime.visualization

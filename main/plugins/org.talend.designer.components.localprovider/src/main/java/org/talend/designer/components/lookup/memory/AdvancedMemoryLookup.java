@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import org.apache.commons.collections.list.GrowthList;
+import org.apache.commons.collections4.list.GrowthList;
 import org.talend.commons.utils.data.map.MultiLazyValuesMap;
 
 /**

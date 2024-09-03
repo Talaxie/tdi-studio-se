@@ -14,7 +14,7 @@ package org.talend.sdk.component.studio.ui.composite.problemmanager;
 
 import java.util.Set;
 
-import org.apache.commons.collections.BidiMap;
+import org.apache.commons.collections4.BidiMap;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;

@@ -113,5 +113,6 @@ Bundle-ClassPath: .,
  lib/velocity-engine-core-2.3.jar
 Import-Package: com.fasterxml.jackson.core,
  com.fasterxml.jackson.databind,
+ org.apache.commons.collections4,
  org.slf4j,
  org.talend.utils.json;version="1.0.0"

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.collections4.map.HashedMap;
 import org.eclipse.gef.commands.Command;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.xml.XmlUtil;

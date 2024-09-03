@@ -15,7 +15,7 @@ package org.talend.designer.core.ui.views.jobsettings.tabs;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
-import org.apache.commons.collections.BidiMap;
+import org.apache.commons.collections4.BidiMap;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;

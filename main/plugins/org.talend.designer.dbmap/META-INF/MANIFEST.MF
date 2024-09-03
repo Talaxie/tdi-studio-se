@@ -7,7 +7,6 @@ Automatic-Module-Name: org.talend.designer.dbmap
 Bundle-Version: 8.8.8.qualifier
 Bundle-ClassPath: .
 Require-Bundle: org.eclipse.core.runtime,
- org.apache.commons.collections,
  org.apache.commons.lang,
  org.talend.model,
  org.talend.core,
@@ -73,6 +72,7 @@ Export-Package: org.talend.designer.dbmap,
  org.talend.designer.dbmap.ui.visualmap.zone.toolbar,
  org.talend.designer.dbmap.utils,
  org.talend.designer.dbmap.utils.problems
+Import-Package: org.apache.commons.collections4.map
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Eclipse-RegisterBuddy: org.talend.testutils

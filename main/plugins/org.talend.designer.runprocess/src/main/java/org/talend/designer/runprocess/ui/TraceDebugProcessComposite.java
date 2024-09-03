@@ -24,7 +24,7 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.collections.BidiMap;
+import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.debug.core.IStreamListener;
 import org.eclipse.jface.preference.IPreferenceStore;
