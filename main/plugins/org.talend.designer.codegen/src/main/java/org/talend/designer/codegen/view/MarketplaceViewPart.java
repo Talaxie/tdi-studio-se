@@ -215,11 +215,6 @@ public class MarketplaceViewPart extends ViewPart {
         authorLabel.setBackground(ColorConstants.WHITE_COLOR);
       } else {
         for (HashMap<String, String> component : componentUninstalleds) {
-          if (LOGGER.isInfoEnabled()) {
-              LOGGER.info("-- component");
-              LOGGER.info(component);
-          }
-
           Composite titreComposite = new Composite(composite, SWT.NONE);
           titreComposite.setLayout(new GridLayout(2, false));
           titreComposite.setLayoutData(new GridData(SWT.BEGINNING, SWT.TOP, true, false));
@@ -261,7 +256,7 @@ public class MarketplaceViewPart extends ViewPart {
             componentInstall(component);
             installButton.setText("Installé");
           });
-        
+
           // Version
           Label versionLabel = new Label(leftComposite, SWT.WRAP);
           versionLabel.setText(component.get("version") + " (" + component.get("releaseDate") + ")");
@@ -434,13 +429,14 @@ public class MarketplaceViewPart extends ViewPart {
   private Boolean componentInstall(HashMap<String, String> component) {
     try {
       // Get component archive file
-      File componentFile = new File(component.get("urlZip"));
       String workspaceLocation = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
       String componentZipPath = workspaceLocation + File.separator + component.get("name") + ".zip";
+      Webhook.downloadFile(component.get("urlZip"), componentZipPath);
 
       // Unzip archive
       String targetFolder = getComponentPath() + File.separator;
       Unzipper.unarchiveV2(componentZipPath, targetFolder);
+      File componentFile = new File(componentZipPath);
       componentFile.delete();
     } catch (Exception e) {
       e.printStackTrace();
