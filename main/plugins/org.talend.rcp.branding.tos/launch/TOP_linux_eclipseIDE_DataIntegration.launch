@@ -5,6 +5,7 @@
     <stringAttribute key="application" value="org.talend.rcp.branding.tos.application"/>
     <booleanAttribute key="askclear" value="true"/>
     <booleanAttribute key="automaticAdd" value="true"/>
+    <booleanAttribute key="automaticIncludeRequirements" value="false"/>
     <booleanAttribute key="automaticValidate" value="true"/>
     <stringAttribute key="bootstrap" value=""/>
     <stringAttribute key="checked" value="[NONE]"/>
@@ -116,9 +117,9 @@
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_SHOW_CODEDETAILS_IN_EXCEPTION_MESSAGES" value="true"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
     <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21"/>
-    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl en_US"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl}"/>
     <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms2048m&#10;-Xmx4096m&#10;-Dstudio.version=8.8.8-SNAPSHOT&#10;-Dsun.security.krb5.debug=true&#10;-Dsun.security.jgss.debug=true&#10;--add-opens java.base/sun.nio.ch=ALL-UNNAMED&#10;--add-opens java.base/java.io=ALL-UNNAMED&#10;--add-opens java.base/java.lang.invoke=ALL-UNNAMED&#10;--add-opens java.base/java.net=ALL-UNNAMED"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dstudio.version=&quot;dev from eclipse&quot;&#10;-Xms2048m&#10;-Xmx4096m&#10;-Dstudio.version=6.0.0.SNAPSHOT&#10;-Dsun.security.krb5.debug=true&#10;-Dsun.security.jgss.debug=true&#10;--add-opens java.base/sun.nio.ch=ALL-UNNAMED&#10;--add-opens java.base/java.io=ALL-UNNAMED&#10;--add-opens java.base/java.lang.invoke=ALL-UNNAMED&#10;--add-opens java.base/java.net=ALL-UNNAMED"/>
     <stringAttribute key="pde.version" value="3.3"/>
     <stringAttribute key="product" value="org.talend.rcp.branding.tos.product"/>
     <booleanAttribute key="restart" value="false"/>
